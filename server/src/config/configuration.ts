@@ -4,7 +4,7 @@ const configuration = {
     cookieSecret: process.env.COOKIE_SECRET || 'a-cookie-secret',
     port: parseInt(process.env.PORT || '8080', 10),
     mongo: {
-        hostname: process.env.MONGO_HOSTNAME || 'localhost',
+        hostname: process.env.MONGO_HOSTNAME || 'mongo',
         port: parseInt(process.env.MONGO_PORT || '27017', 10),
     },
 };

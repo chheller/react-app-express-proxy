@@ -1,18 +1,22 @@
-import { Document, Model, Schema } from 'mongoose';
-import { decorate, injectable } from '../../ioc';
-import Logger from '../../log/logger';
+import { injectable, unmanaged } from 'inversify';
+import { Connection, Document, Model, Schema } from 'mongoose';
+import log from '../../log/logger';
 import { FindOptions, Repository } from '../Repository';
-import { MongoDbConnection } from './mongo-db';
 
+@injectable()
 export abstract class BaseRepository<Entity = Record<string, any>>
     implements Repository<Entity> {
-    protected connection!: MongoDbConnection;
+    protected logger: typeof log;
     protected model: Model<Document<Entity>>;
-    protected modelName!: string;
-    protected schema!: Schema;
-    protected logger = Logger.child({ repository: 'base' });
-    constructor() {
-        this.model = this.connection.db.model(this.modelName, this.schema);
+
+    constructor(
+        protected connection: Connection,
+        @unmanaged() protected modelName: string,
+        @unmanaged() protected schema: Schema
+    ) {
+        this.logger = log.child({ repository: this.modelName });
+        this.logger.info(`Creating repository for ${this.modelName} schema.`);
+        this.model = this.connection.model(this.modelName, this.schema);
     }
 
     create(entity: Entity): Promise<Entity> {
@@ -22,7 +26,8 @@ export abstract class BaseRepository<Entity = Record<string, any>>
             ) as unknown) as Promise<Entity>;
         } catch (err) {
             this.logger.error(
-                `Error on collection:${this.model.collection.name} performing create() query`
+                `Error on collection:${this.model.collection.name} performing create() query`,
+                err
             );
             throw new Error('Error performing requested operation');
         }
@@ -72,5 +77,3 @@ export abstract class BaseRepository<Entity = Record<string, any>>
         }
     }
 }
-
-decorate(injectable(), BaseRepository);

@@ -1,12 +1,10 @@
-import { Controller } from '@tsoa/runtime';
-import { inject, Container, decorate, injectable, interfaces } from 'inversify';
+import { Container, decorate, inject, injectable, interfaces } from 'inversify';
 import {
-    buildProviderModule,
+    autoProvide,
     fluentProvide,
     provide,
-    autoProvide,
 } from 'inversify-binding-decorators';
-import { Db } from 'mongodb';
+import { Controller } from 'tsoa';
 
 // Assign a container to `iocContainer`.
 const iocContainer = new Container();
@@ -16,10 +14,8 @@ decorate(injectable(), Controller);
 const provideSingleton = function <T>(
     identifier: interfaces.ServiceIdentifier<T>
 ) {
-    return fluentProvide(identifier).inSingletonScope().done();
+    return fluentProvide(identifier).inSingletonScope().done(true);
 };
-
-iocContainer.load(buildProviderModule());
 
 // export according to convention
 export {

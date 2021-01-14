@@ -11,6 +11,7 @@ export class UserController extends Controller {
     private logger = Logger.child({ controller: 'User Controller' });
     constructor(@inject(UserService) private service: UserService) {
         super();
+        console.log('Creating user controller');
         this.logger.info('Creating User Controller');
     }
     @Get(':id')
