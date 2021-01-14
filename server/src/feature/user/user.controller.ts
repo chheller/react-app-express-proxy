@@ -1,22 +1,43 @@
-import { Body, Controller, Get, Path, Post, Route } from 'tsoa';
-import database from '../../data/mongo/mongo.connection';
+import { Body, Controller, Get, Path, Post, Query, Route } from 'tsoa';
+import { SortOptions } from '../../data/Repository';
+import { inject, provideSingleton } from '../../ioc';
+import Logger from '../../log/logger';
+import { User } from './user.model';
 import { UserService } from './user.service';
-import { User, UserSchema } from './user.model';
 
-@Route('')
+@Route('users')
+@provideSingleton(UserController)
 export class UserController extends Controller {
-    constructor(
-        private service = new UserService(database?.collection('user'))
-    ) {
+    private logger = Logger.child({ controller: 'User Controller' });
+    constructor(@inject(UserService) private service: UserService) {
         super();
+        this.logger.info('Creating User Controller');
     }
-    @Get('/user:id')
+    @Get(':id')
     async getUser(@Path('id') userId: string) {
-        return this.service.get({ userId });
+        try {
+            this.logger.info('Fetching user');
+            return this.service.find({ userId });
+        } catch (err) {
+            this.logger.error(err);
+            throw new Error('User not found');
+        }
     }
 
-    @Post('/user')
+    @Get(':attribute/:value')
+    async getUsers(
+        @Path('attribute') attribute: string,
+        @Path('value') value: any,
+        @Query('skip') skip?: number,
+        @Query('limit') limit?: number,
+        @Query('sort') sort?: SortOptions
+    ) {
+        return this.service.find({ [attribute]: value }, { skip, limit, sort });
+    }
+
+    @Post('')
     async createUser(@Body() user: User) {
-        return this.service.post(user as UserSchema);
+        console.log('Creating User');
+        return this.service.create(user);
     }
 }

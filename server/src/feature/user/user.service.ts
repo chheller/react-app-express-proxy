@@ -1,5 +1,11 @@
-import { Collection } from 'mongodb';
-import { StandardDao } from '../../data/mongo/mongo.dao';
-import { User, UserSchema } from './user.model';
+import { inject, provideSingleton } from '../../ioc';
+import { BaseService } from '../service';
+import { User } from './user.model';
+import { UserRepository } from './user.repository';
 
-export class UserService extends StandardDao<User, UserSchema>() {}
+@provideSingleton(UserService)
+export class UserService extends BaseService<User> {
+    constructor(@inject(UserRepository) protected repository: UserRepository) {
+        super();
+    }
+}
