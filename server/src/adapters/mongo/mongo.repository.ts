@@ -1,6 +1,6 @@
 import { injectable, unmanaged } from 'inversify';
 import { Connection, Document, Model, Schema } from 'mongoose';
-import log from '../../log/logger';
+import log from '../../common/logger';
 import { FindOptions, Repository } from '../Repository';
 
 @injectable()

@@ -1,6 +1,6 @@
 import { Connection, Schema } from 'mongoose';
-import { BaseRepository } from '../../data/mongo/mongo.repository';
-import { inject, provideSingleton } from '../../ioc';
+import { BaseRepository } from '../../adapters/mongo/mongo.repository';
+import { inject, provideSingleton } from '../../common/ioc';
 import { User } from './user.model';
 
 @provideSingleton(UserRepository)

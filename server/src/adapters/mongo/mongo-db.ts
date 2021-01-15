@@ -1,6 +1,6 @@
 import { createConnection } from 'mongoose';
-import configuration from '../../config/configuration';
-import Logger from '../../log/logger';
+import configuration from '../../common/configuration';
+import Logger from '../../common/logger';
 
 const logger = Logger.child({ name: 'MongoDB' });
 

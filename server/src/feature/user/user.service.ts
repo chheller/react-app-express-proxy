@@ -1,4 +1,4 @@
-import { inject, provideSingleton } from '../../ioc';
+import { inject, provideSingleton } from '../../common/ioc';
 import { BaseService } from '../service';
 import { User } from './user.model';
 import { UserRepository } from './user.repository';

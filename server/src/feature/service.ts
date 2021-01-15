@@ -1,7 +1,7 @@
-import { BaseRepository } from '../data/mongo/mongo.repository';
-import { sanitizeSearchQuery } from '../data/mongo/sanitize';
-import { FindOptions } from '../data/Repository';
-import { decorate, injectable } from '../ioc';
+import { BaseRepository } from '../adapters/mongo/mongo.repository';
+import { sanitizeSearchQuery } from '../adapters/mongo/sanitize';
+import { FindOptions } from '../adapters/Repository';
+import { decorate, injectable } from '../common/ioc';
 
 export abstract class BaseService<Entity extends Record<string, any>> {
     protected repository!: BaseRepository<Entity>;

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Path, Post, Query, Route } from 'tsoa';
-import { SortOptions } from '../../data/Repository';
-import { inject, provideSingleton } from '../../ioc';
-import Logger from '../../log/logger';
+import { SortOptions } from '../../adapters/Repository';
+import { inject, provideSingleton } from '../../common/ioc';
+import Logger from '../../common/logger';
 import { User } from './user.model';
 import { UserService } from './user.service';
 
