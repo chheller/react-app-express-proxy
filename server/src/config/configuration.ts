@@ -6,6 +6,8 @@ const configuration = {
     mongo: {
         hostname: process.env.MONGO_HOSTNAME || 'mongo',
         port: parseInt(process.env.MONGO_PORT || '27017', 10),
+        username: process.env.MONGO_USERNAME || 'root',
+        password: process.env.MONGO_PASSWORD || 'secret',
     },
 };
 

@@ -19,11 +19,10 @@ export abstract class BaseRepository<Entity = Record<string, any>>
         this.model = this.connection.model(this.modelName, this.schema);
     }
 
-    create(entity: Entity): Promise<Entity> {
+    async create(entity: Entity): Promise<Entity> {
         try {
-            return (this.model.create(
-                new Document(entity)
-            ) as unknown) as Promise<Entity>;
+            const doc = await this.model.create(new this.model(entity));
+            return (doc.toJSON() as unknown) as Entity;
         } catch (err) {
             this.logger.error(
                 `Error on collection:${this.model.collection.name} performing create() query`,

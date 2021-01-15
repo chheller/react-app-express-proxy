@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import logger from '../../log/logger';
 
 export function sanitizeSearchQuery(searchQuery: Record<string, any>) {
     const sanitizedQuery = Object.entries(searchQuery).reduce(

@@ -23,6 +23,7 @@ export async function initializeApp() {
         app.use(bodyParser.json());
         app.use(cookieParser(configuration.cookieSecret || 'secret'));
         app.use(morgan('dev'));
+
         const mongooseConnection = await MongoDbConnection.getConnection();
         if (isNil(mongooseConnection))
             throw new Error('Unable to connect to mongo');
