@@ -1,6 +1,6 @@
-import { initializeApp } from './app/app';
 import env from './common/configuration';
 import logger from './common/logger';
+import { initializeApp } from './server/server';
 
 (async () => {
     const app = await initializeApp();
