@@ -2,16 +2,16 @@ import { ObjectId } from 'mongodb';
 
 export function sanitizeSearchQuery(searchQuery: Record<string, any>) {
     const sanitizedQuery = Object.entries(searchQuery).reduce(
-        (query: SanitizedQuery[], [key, value]: [string, any]) => {
+        (query: SanitizedQuery, [key, value]: [string, any]) => {
             if (
                 typeof value === 'object' ||
                 key.startsWith('$') ||
                 key === '_id'
             )
                 return query;
-            return [...query, { [key]: { $regex: value, $options: 'i' } }];
+            return { ...query, [key]: { $regex: value, $options: 'i' } };
         },
-        new Array<SanitizedQuery>()
+        {}
     );
 
     if (Object.prototype.hasOwnProperty.call(searchQuery, '_id')) {

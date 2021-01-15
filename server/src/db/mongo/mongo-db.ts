@@ -19,7 +19,7 @@ export class MongoDbConnection {
                 `Connecting to ${MongoDbConnection.connectionString} MongoDb`
             );
             return createConnection(MongoDbConnection.connectionString, {
-                dbName: 'admin',
+                dbName: database,
                 authSource: 'admin',
                 auth: {
                     user: username,

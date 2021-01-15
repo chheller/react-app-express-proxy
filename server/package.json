@@ -6,11 +6,11 @@
     "license": "MIT",
     "scripts": {
         "start": "node dist",
-        "build": "yarn tsoa:generate && tsc",
+        "build": "yarn tsoa:generate && tsc --outDir ../build/server",
         "start:dev": "yarn nodemon& tsnd --respawn --rs src/index.ts",
         "tsoa:generate": "yarn tsoa swagger && yarn tsoa routes"
     },
-    "nodemon": {
+    "nodemonConfig": {
         "watch": "src/**/*.controller.ts",
         "exec": "yarn tsoa:generate"
     },
