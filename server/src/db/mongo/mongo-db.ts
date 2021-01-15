@@ -5,7 +5,7 @@ import Logger from '../../common/logger';
 const logger = Logger.child({ name: 'MongoDB' });
 
 const {
-    mongo: { hostname, port, username, password },
+    mongo: { hostname, port, username, password, database },
 } = configuration;
 
 export class MongoDbConnection {
@@ -19,6 +19,8 @@ export class MongoDbConnection {
                 `Connecting to ${MongoDbConnection.connectionString} MongoDb`
             );
             return createConnection(MongoDbConnection.connectionString, {
+                dbName: 'admin',
+                authSource: 'admin',
                 auth: {
                     user: username,
                     password: password,

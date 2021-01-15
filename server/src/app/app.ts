@@ -6,10 +6,10 @@ import { isNil } from 'lodash';
 import { Connection } from 'mongoose';
 import morgan from 'morgan';
 import 'reflect-metadata';
-import { MongoDbConnection } from '../adapters/mongo/mongo-db';
 import configuration from '../common/configuration';
 import { iocContainer } from '../common/ioc';
 import log from '../common/logger';
+import { MongoDbConnection } from '../db/mongo/mongo-db';
 import error404Middleware from '../middleware/404.mw';
 // @ts-ignore
 import { RegisterRoutes } from '../routes';
