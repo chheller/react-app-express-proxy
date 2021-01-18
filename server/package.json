@@ -6,13 +6,8 @@
     "license": "MIT",
     "scripts": {
         "start": "node dist",
-        "build": "yarn tsoa:generate && tsc --outDir ../build/server",
-        "start:dev": "yarn nodemon& tsnd --respawn --rs src/index.ts",
-        "tsoa:generate": "yarn tsoa swagger && yarn tsoa routes"
-    },
-    "nodemonConfig": {
-        "watch": "src/**/*.controller.ts",
-        "exec": "yarn tsoa:generate"
+        "build": "tsoa spec-and-routes && tsc",
+        "start:dev": "yarn build && concurrently -n TSC,TSOA,SERVER -c red,blue,green \"tsc --watch --preserveWatchOutput --incremental\" \"nodemon -w src -x tsoa spec-and-routes\" \"nodemon -w dist -x node dist\""
     },
     "dependencies": {
         "body-parser": "^1.19.0",
@@ -37,8 +32,10 @@
         "@types/winston": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^4.3.0",
         "@typescript-eslint/parser": "^4.3.0",
+        "concurrently": "^5.3.0",
         "eslint": "^7.15.0",
         "eslint-config-prettier": "^7.0.0",
+        "jest": "^26.6.3",
         "nodemon": "^2.0.6",
         "prettier": "^2.2.1",
         "ts-node-dev": "^1.0.0",
