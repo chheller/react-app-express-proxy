@@ -12,6 +12,8 @@ services:
     links:
       - redis
       - mongo
+    environment:
+      MONGO_HOSTNAME: "mongo"
   redis:
     container_name: redis
     image: redis
