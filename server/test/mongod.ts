@@ -1,7 +1,9 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 export const mongod = new MongoMemoryServer({
-  instance: {},
+  instance: {
+    port: 27017,
+  },
   binary: {},
   autoStart: false,
 });

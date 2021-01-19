@@ -1,4 +1,4 @@
-import { createConnection } from 'mongoose';
+import { Connection, createConnection } from 'mongoose';
 import configuration from '../../common/configuration';
 import Logger from '../../common/logger';
 
@@ -9,23 +9,30 @@ const {
 } = configuration;
 
 export class MongoDbConnection {
-  private static readonly connectionString: string = `mongodb://${hostname}:${port}`;
-
+  private static connection: Connection;
   constructor() {}
 
+  static async close() {
+    await MongoDbConnection.connection.close();
+  }
   static async getConnection() {
     try {
-      logger.info(
-        `Connecting to ${MongoDbConnection.connectionString} MongoDb`
-      );
-      return createConnection(MongoDbConnection.connectionString, {
+      const connectionString = `mongodb://${hostname}:${port}`;
+      logger.info(`Connecting to ${connectionString} MongoDb`);
+
+      MongoDbConnection.connection = createConnection(connectionString, {
         dbName: database,
-        authSource: 'admin',
-        auth: {
-          user: username,
-          password: password,
-        },
+        ...(username && password
+          ? {
+              authSource: 'admin',
+              auth: {
+                user: username,
+                password: password,
+              },
+            }
+          : {}),
       });
+      return MongoDbConnection.connection;
     } catch (err) {
       logger.error(`Error connecting to mongo`, err);
     }

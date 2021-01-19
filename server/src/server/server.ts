@@ -15,6 +15,7 @@ import error404Middleware from '../middleware/404.mw';
 import { RegisterRoutes } from '../routes';
 
 const logger = log.child({ service: 'Application' });
+
 export async function initializeApp() {
   try {
     const app = Express();
@@ -30,7 +31,7 @@ export async function initializeApp() {
 
     iocContainer
       .bind<Connection>(Connection)
-      .toConstantValue(mongooseConnection!);
+      .toConstantValue(mongooseConnection);
 
     iocContainer.load(buildProviderModule());
 
@@ -43,4 +44,8 @@ export async function initializeApp() {
     logger.error(`Error initializing app`, err);
     throw err;
   }
+}
+
+export async function stopApp() {
+  await MongoDbConnection.close();
 }

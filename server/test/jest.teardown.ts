@@ -1,5 +1,9 @@
 import { mongod } from './mongod';
+import { TestApp } from './server';
 
 export default async function () {
-  mongod.stop();
+  console.log('Shutting down Mongod ...');
+  await mongod.stop();
+  console.log('Mongod shut down.');
+  await TestApp.stopServer();
 }
