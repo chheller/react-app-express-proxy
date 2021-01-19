@@ -5,7 +5,7 @@
         "module": "commonjs",
         "sourceMap": true,
         "outDir": "./dist",
-        "types": ["reflect-metadata"],
+        "types": ["reflect-metadata", "jest"],
         "removeComments": true,
         "strict": true,
         "noImplicitAny": true,
@@ -22,5 +22,6 @@
         "emitDecoratorMetadata": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
-    }
+    },
+    "exclude": ["**.spec.ts"]
 }
