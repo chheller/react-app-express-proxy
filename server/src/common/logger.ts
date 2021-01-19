@@ -1,7 +1,7 @@
-import winston, { transports, format } from "winston";
+import winston, { transports, format } from 'winston';
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   transports: [
     new transports.Console({
       format: format.colorize({ all: true }),

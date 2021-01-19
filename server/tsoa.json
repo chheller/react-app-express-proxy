@@ -1,14 +1,14 @@
 {
-    "entryFile": "src/index.ts",
-    "noImplicitAdditionalProperties": "throw-on-extras",
-    "spec": {
-        "outputDirectory": "./dist",
-        "specVersion": 3
-    },
-    "routes": {
-        "routesDir": "src",
-        "iocModule": "./src/common/ioc.ts",
-        "middleware": "express",
-        "entryFile": "./src/feature/controller.ts"
-    }
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "spec": {
+    "outputDirectory": "./dist",
+    "specVersion": 3
+  },
+  "routes": {
+    "routesDir": "src",
+    "iocModule": "./src/common/ioc.ts",
+    "middleware": "express",
+    "entryFile": "./src/feature/controller.ts"
+  }
 }

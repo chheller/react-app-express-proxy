@@ -1,3 +1,3 @@
 describe('User Context', () => {
-    it('Should fetch a user', () => {});
+  it('Should fetch a user', () => {});
 });

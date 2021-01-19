@@ -6,8 +6,8 @@ import { UserRepository } from './user.repository';
 
 @provideSingleton(UserService)
 export class UserService extends BaseService<User> {
-    protected logger = log.child({ service: 'users' });
-    constructor(@inject(UserRepository) protected repository: UserRepository) {
-        super();
-    }
+  protected logger = log.child({ service: 'users' });
+  constructor(@inject(UserRepository) protected repository: UserRepository) {
+    super();
+  }
 }

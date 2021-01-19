@@ -16,31 +16,31 @@ import { RegisterRoutes } from '../routes';
 
 const logger = log.child({ service: 'Application' });
 export async function initializeApp() {
-    try {
-        const app = Express();
+  try {
+    const app = Express();
 
-        app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(bodyParser.json());
-        app.use(cookieParser(configuration.cookieSecret || 'secret'));
-        app.use(morgan('dev'));
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(cookieParser(configuration.cookieSecret || 'secret'));
+    app.use(morgan('dev'));
 
-        const mongooseConnection = await MongoDbConnection.getConnection();
-        if (isNil(mongooseConnection))
-            throw new Error('Unable to connect to mongo');
+    const mongooseConnection = await MongoDbConnection.getConnection();
+    if (isNil(mongooseConnection))
+      throw new Error('Unable to connect to mongo');
 
-        iocContainer
-            .bind<Connection>(Connection)
-            .toConstantValue(mongooseConnection!);
+    iocContainer
+      .bind<Connection>(Connection)
+      .toConstantValue(mongooseConnection!);
 
-        iocContainer.load(buildProviderModule());
+    iocContainer.load(buildProviderModule());
 
-        RegisterRoutes(app);
+    RegisterRoutes(app);
 
-        app.use(error404Middleware);
+    app.use(error404Middleware);
 
-        return app;
-    } catch (err) {
-        logger.error(`Error initializing app`, err);
-        throw err;
-    }
+    return app;
+  } catch (err) {
+    logger.error(`Error initializing app`, err);
+    throw err;
+  }
 }
