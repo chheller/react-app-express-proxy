@@ -2,7 +2,7 @@ import { Body, Controller, Get, Path, Post, Query, Route } from 'tsoa';
 import { inject, provideSingleton } from '../../common/ioc';
 import Logger from '../../common/logger';
 import { SortOptions } from '../../db/Repository';
-import { User } from './user.model';
+import { CreateUserDTO } from './user.model';
 import { UserService } from './user.service';
 
 @Route('users')
@@ -37,7 +37,7 @@ export class UserController extends Controller {
   }
 
   @Post('')
-  async createUser(@Body() user: User) {
+  async createUser(@Body() user: CreateUserDTO) {
     console.log('Creating User');
     return this.service.create(user);
   }

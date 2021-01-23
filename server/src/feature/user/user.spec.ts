@@ -1,13 +1,32 @@
-import axios from 'axios';
-describe('User Context', () => {
-  it('Should fetch a user', async () => {
-    jest.setTimeout(10000);
+import axios from '../../../test/axios';
+import { CreateUserDTO } from './user.model';
 
-    const response = await axios.get('/users/123', {
-      baseURL: 'http://localhost:8080',
+describe('User Context', () => {
+  it('Should create a user', async () => {
+    const createTestUser: CreateUserDTO = {
+      avatarUrl: '',
+      emailAddress: 'notareal@email.com',
+      familyName: 'last_name',
+      givenName: 'first_name',
+      preferredName: 'first_name last_name',
+    };
+    const response = await axios.post('/users', createTestUser);
+
+    Object.getOwnPropertyNames(createTestUser).forEach((property) => {
+      expect(response.data).toHaveProperty(property);
     });
+  });
+
+  it('Should fetch a user with a given id', async () => {
+    const response = await axios.get('/users/12345');
     console.log(response.data);
     expect(response.status).toBe(200);
-    // expect(response.data.length).toBeGreaterThan(0);
+    expect(response.data.length).toBeGreaterThan(0);
   });
+
+  it('Should update a user', async () => {});
+
+  it('Should partially update a user', async () => {});
+
+  it('Should delete a user', async () => {});
 });

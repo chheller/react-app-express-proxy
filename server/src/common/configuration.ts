@@ -10,6 +10,7 @@ const configuration = {
     password: process.env.MONGO_PASSWORD,
     database: process.env.MONGO_DATABASE || 'default_database',
   },
+  loggerLevel: process.env.LOGGER_LEVEL ?? 'info',
 };
 
 Object.entries(configuration).forEach(([key, value]) => {
