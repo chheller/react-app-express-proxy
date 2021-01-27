@@ -11,7 +11,15 @@
     "watch-build": "tsc --watch --preserveWatchOutput --incremental",
     "watch-dist": "nodemon -w dist -x node dist",
     "watch-tsoa": "nodemon -w src -x tsoa spec-and-routes",
-    "test": "LOGGER_LEVEL=error jest"
+    "test": "LOGGER_LEVEL=error nyc jest"
+  },
+  "nyc": {
+    "include": "src/**",
+    "extension": ".ts",
+    "reporter": [
+      "text",
+      "html"
+    ]
   },
   "dependencies": {
     "@types/jest": "^26.0.20",
@@ -46,6 +54,7 @@
     "jest": "^26.6.3",
     "mongodb-memory-server": "^6.9.3",
     "nodemon": "^2.0.6",
+    "nyc": "^15.1.0",
     "prettier": "^2.2.1",
     "ts-jest": "^26.4.4",
     "ts-node-dev": "^1.0.0",
