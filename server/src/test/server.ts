@@ -1,6 +1,6 @@
 import { Server } from 'http';
 import isNil from 'lodash/isNil';
-import { initializeApp, stopApp } from '../src/server/server';
+import { close, initializeApp } from '../server/server';
 
 export class TestApp {
   private static server: Server | undefined;
@@ -14,7 +14,7 @@ export class TestApp {
   }
 
   static async stopServer() {
-    await stopApp();
+    await close();
     return new Promise((resolve, reject) => {
       this.server!.close((err) => {
         if (err) {

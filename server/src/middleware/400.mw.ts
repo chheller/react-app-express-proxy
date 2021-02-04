@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { ValidateError } from 'tsoa';
-import logger from '../common/logger';
+import Logger from '../common/logger';
 
+const logger = Logger.child({ service: 'ValidateErrorMiddleware' });
 export default function (
   err: Error,
   req: Request,

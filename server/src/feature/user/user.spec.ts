@@ -1,4 +1,4 @@
-import axios from '../../../test/axios';
+import axios from '../../test/axios';
 import { CreateUserDTO } from './user.model';
 
 describe('User Context', () => {

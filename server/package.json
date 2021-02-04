@@ -6,10 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist",
-    "start:dev": "yarn build && concurrently -n TSC,TSOA,SERVER -c red,blue,green watch:watch-build npm:watch-tsoa npm:watch-dist ",
+    "start:dev": "concurrently -n TSOA,SERVER -c blue,green npm:watch-tsoa \"ts-node-dev --respawn src\"",
     "build": "tsoa spec-and-routes && tsc",
-    "watch-build": "tsc --watch --preserveWatchOutput --incremental",
-    "watch-dist": "nodemon -w dist -x node dist",
     "watch-tsoa": "nodemon -w src -x tsoa spec-and-routes",
     "test": "LOGGER_LEVEL=error nyc jest"
   },

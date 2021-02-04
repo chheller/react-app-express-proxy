@@ -1,6 +1,19 @@
 import isNil from 'lodash/isNil';
+import merge from 'lodash/merge';
 
-const configuration = {
+export interface Configuration {
+  cookieSecret: string;
+  port: number;
+  mongo: {
+    hostname: string;
+    port: number;
+    username: string;
+    password: string;
+    database: string;
+  };
+  loggerLevel: string;
+}
+const config = merge({
   cookieSecret: process.env.COOKIE_SECRET || 'a-cookie-secret',
   port: parseInt(process.env.PORT || '8080', 10),
   mongo: {
@@ -11,12 +24,12 @@ const configuration = {
     database: process.env.MONGO_DATABASE || 'default_database',
   },
   loggerLevel: process.env.LOGGER_LEVEL ?? 'info',
-};
+});
 
-Object.entries(configuration).forEach(([key, value]) => {
+Object.entries(config).forEach(([key, value]) => {
   if (isNil(value)) {
     throw new Error(`Configuration was missing for ${key}`);
   }
 });
 
-export default configuration;
+export default config;

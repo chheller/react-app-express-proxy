@@ -1,13 +1,11 @@
 import winston, { format, transports } from 'winston';
-import configuration from './configuration';
+import config from './configuration';
 
-const logger = winston.createLogger({
-  level: configuration.loggerLevel,
+export default winston.createLogger({
+  level: config.loggerLevel,
   transports: [
     new transports.Console({
       format: format.colorize({ all: true }),
     }),
   ],
 });
-
-export default logger;

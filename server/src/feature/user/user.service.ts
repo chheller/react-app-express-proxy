@@ -1,13 +1,13 @@
 import { v4 } from 'uuid';
 import { inject, provideSingleton } from '../../common/ioc';
-import log from '../../common/logger';
+import Logger from '../../common/logger';
 import { BaseService } from '../service';
 import { CreateUserDTO, User } from './user.model';
 import { UserRepository } from './user.repository';
 
 @provideSingleton(UserService)
 export class UserService extends BaseService<User> {
-  protected logger = log.child({ service: 'users' });
+  protected logger = Logger.child({ service: 'users' });
   constructor(@inject(UserRepository) protected repository: UserRepository) {
     super();
   }

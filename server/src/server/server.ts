@@ -6,26 +6,16 @@ import { isNil } from 'lodash';
 import { Connection } from 'mongoose';
 import morgan from 'morgan';
 import 'reflect-metadata';
-import configuration from '../common/configuration';
+import config from '../common/configuration';
 import { iocContainer } from '../common/ioc';
-import log from '../common/logger';
 import { MongoDbConnection } from '../db/mongo/mongo-db';
 import error400Middleware from '../middleware/400.mw';
 import error404Middleware from '../middleware/404.mw';
 // @ts-ignore
 import { RegisterRoutes } from '../routes';
 
-const logger = log.child({ service: 'Application' });
-
-export async function initializeApp() {
+export async function initializeApp(serverConfiguration?: any) {
   try {
-    const app = Express();
-
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    app.use(cookieParser(configuration.cookieSecret || 'secret'));
-    app.use(morgan('dev'));
-
     const mongooseConnection = await MongoDbConnection.getConnection();
     if (isNil(mongooseConnection))
       throw new Error('Unable to connect to mongo');
@@ -36,6 +26,13 @@ export async function initializeApp() {
 
     iocContainer.load(buildProviderModule());
 
+    const app = Express();
+
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(cookieParser(config.cookieSecret));
+    app.use(morgan('dev'));
+
     RegisterRoutes(app);
 
     app.use(error400Middleware);
@@ -43,11 +40,12 @@ export async function initializeApp() {
 
     return app;
   } catch (err) {
-    logger.error(`Error initializing app`, err);
     throw err;
   }
 }
 
-export async function stopApp() {
+export async function listen() {}
+
+export async function close() {
   await MongoDbConnection.close();
 }
