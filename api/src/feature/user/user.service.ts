@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { inject, provideSingleton } from '../../common/ioc';
 import Logger from '../../common/logger';
-import { BaseService } from '../service';
+import { BaseService } from '../../common/service';
 import { CreateUserDTO, User } from './user.model';
 import { UserRepository } from './user.repository';
 

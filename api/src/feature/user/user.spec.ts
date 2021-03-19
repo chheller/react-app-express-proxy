@@ -1,10 +1,20 @@
 import axios from '../../test/axios';
+import { getMongooseConnection } from '../../test/mongod';
+import mockUsers from './user.mock.json';
 import { CreateUserDTO } from './user.model';
 
-describe('User Context', () => {
-  beforeAll(() => {});
+describe('USER', () => {
+  beforeEach(async () => {
+    const conn = await getMongooseConnection();
+    await conn.collection('users').insertMany(mockUsers);
+  });
 
-  it('Should create a user', async () => {
+  afterEach(async () => {
+    const conn = await getMongooseConnection();
+    conn.collection('users').drop();
+  });
+
+  it('POST - Should create a user', async () => {
     const createTestUser: CreateUserDTO = {
       avatarUrl: '',
       emailAddress: 'notareal@email.com',
@@ -19,8 +29,10 @@ describe('User Context', () => {
     });
   });
 
-  it('Should fetch a user with a given id', async () => {
-    const response = await axios.get('/users/12345');
+  it('GET - Should fetch a user with a given id', async () => {
+    const response = await axios.get(
+      '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'
+    );
     expect(response.status).toBe(200);
     expect(response.data.length).toBeGreaterThan(0);
   });
@@ -37,16 +49,21 @@ describe('User Context', () => {
   ];
 
   userPatchProperties.forEach((key, value) => {
-    it('Should update a user', async () => {
-      const response = await axios.patch('/users/12345', {
-        [key as any]: value,
-      });
+    it('PATCH - Should partially update a user', async () => {
+      const response = await axios.patch(
+        '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff',
+        {
+          [key as any]: value,
+        }
+      );
       expect(response.status).toBe(200);
       expect(response.data).toBe({});
     });
   });
-
-  it('Should partially update a user', async () => {});
-
-  it('Should delete a user', async () => {});
+  it('DELETE - Should delete a user', async () => {
+    const response = await axios.delete(
+      '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'
+    );
+    expect(response.status).toBe(200);
+  });
 });

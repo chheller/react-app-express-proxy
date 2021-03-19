@@ -1,4 +1,5 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { Connection, createConnection } from 'mongoose';
 
 const mongod: MongoMemoryServer = new MongoMemoryServer({
   instance: {
@@ -20,4 +21,12 @@ export async function stopMongodb() {
     await mongod.stop();
     await new Promise((resolve) => setTimeout(resolve, 5000));
   }
+}
+let connection: Connection;
+
+export async function getMongooseConnection() {
+  if (!connection) {
+    connection = await createConnection('mongodb://127.0.0.1:27017');
+  }
+  return connection;
 }
