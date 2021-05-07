@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Query, Route } from 'tsoa';
+import { Body, Controller, Delete, Get, Path, Post, Query, Route } from 'tsoa';
 import { inject, provideSingleton } from '../../common/ioc';
 import Logger from '../../common/logger';
 import { SortOptions } from '../../db/Repository';
@@ -40,5 +40,9 @@ export class UserController extends Controller {
   async createUser(@Body() user: CreateUserDTO) {
     console.log('Creating User');
     return this.service.create(user);
+  }
+  @Delete(':/userId')
+  async deleteUser(@Path('userId') userId: string) {
+    return this.service.delete(userId);
   }
 }

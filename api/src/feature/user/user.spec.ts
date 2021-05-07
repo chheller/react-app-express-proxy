@@ -1,16 +1,16 @@
 import axios from '../../test/axios';
-import { getMongooseConnection } from '../../test/mongod';
+import { MongoTestMemoryServer } from '../../test/mongod';
 import mockUsers from './user.mock.json';
 import { CreateUserDTO } from './user.model';
 
 describe('USER', () => {
   beforeEach(async () => {
-    const conn = await getMongooseConnection();
+    const conn = await MongoTestMemoryServer.getMongooseConnection();
     await conn.collection('users').insertMany(mockUsers);
   });
 
   afterEach(async () => {
-    const conn = await getMongooseConnection();
+    const conn = await MongoTestMemoryServer.getMongooseConnection();
     conn.collection('users').drop();
   });
 
@@ -60,6 +60,7 @@ describe('USER', () => {
       expect(response.data).toBe({});
     });
   });
+
   it('DELETE - Should delete a user', async () => {
     const response = await axios.delete(
       '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'

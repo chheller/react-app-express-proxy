@@ -20,6 +20,10 @@ export abstract class BaseService<Entity extends Record<string, any>> {
   public create(entity: Entity): Promise<Entity> {
     return this.repository.create(entity);
   }
+
+  public delete(entityId: string): Promise<number> {
+    return this.repository.delete({ id: entityId });
+  }
 }
 
 decorate(injectable(), BaseService);
