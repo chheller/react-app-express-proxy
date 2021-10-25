@@ -18,7 +18,7 @@ export class UserController extends Controller {
   async getUser(@Path('id') userId: string) {
     try {
       this.logger.info('Fetching user');
-      return this.service.find({ userId });
+      return this.service.findById(userId);
     } catch (err) {
       this.logger.error(err);
       throw new Error('User not found');
@@ -41,7 +41,7 @@ export class UserController extends Controller {
     console.log('Creating User');
     return this.service.create(user);
   }
-  @Delete(':/userId')
+  @Delete(':userId')
   async deleteUser(@Path('userId') userId: string) {
     return this.service.delete(userId);
   }

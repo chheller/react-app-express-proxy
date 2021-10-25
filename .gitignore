@@ -1,0 +1,8 @@
+node_modules
+volumes
+
+api/.nyc_output
+api/coverage
+api/dist
+
+.DS_Store

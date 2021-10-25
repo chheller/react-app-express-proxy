@@ -11,6 +11,7 @@ import { iocContainer } from '../common/ioc';
 import { MongoDbConnection } from '../db/mongo/mongo-db';
 import error400Middleware from '../middleware/400.mw';
 import error404Middleware from '../middleware/404.mw';
+import error500Middleware from '../middleware/500.mw';
 // @ts-ignore
 import { RegisterRoutes } from '../routes';
 
@@ -36,6 +37,8 @@ export async function initializeApp(serverConfiguration?: any) {
     RegisterRoutes(app);
 
     app.use(error400Middleware);
+    app.use(error500Middleware);
+
     app.use(error404Middleware);
 
     return app;

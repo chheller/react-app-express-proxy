@@ -1,17 +1,27 @@
+import { Connection } from 'mongoose';
 import axios from '../../test/axios';
 import { MongoTestMemoryServer } from '../../test/mongod';
 import mockUsers from './user.mock.json';
-import { CreateUserDTO } from './user.model';
+import { CreateUserDTO, User } from './user.model';
 
-describe('USER', () => {
+describe('feature/users', () => {
+  jest.setTimeout(10000);
+
+  let conn: Connection;
+  beforeAll(async () => {
+    conn = await MongoTestMemoryServer.getMongooseConnection();
+  });
+
   beforeEach(async () => {
-    const conn = await MongoTestMemoryServer.getMongooseConnection();
     await conn.collection('users').insertMany(mockUsers);
   });
 
   afterEach(async () => {
-    const conn = await MongoTestMemoryServer.getMongooseConnection();
-    conn.collection('users').drop();
+    await conn.collection('users').drop();
+  });
+
+  afterAll(async () => {
+    await conn.close();
   });
 
   it('POST - Should create a user', async () => {
@@ -30,11 +40,10 @@ describe('USER', () => {
   });
 
   it('GET - Should fetch a user with a given id', async () => {
-    const response = await axios.get(
+    const response = await axios.get<User>(
       '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'
     );
     expect(response.status).toBe(200);
-    expect(response.data.length).toBeGreaterThan(0);
   });
 
   const userPatchProperties: Array<{
@@ -65,6 +74,7 @@ describe('USER', () => {
     const response = await axios.delete(
       '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'
     );
+    console.log({ response });
     expect(response.status).toBe(200);
   });
 });

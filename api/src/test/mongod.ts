@@ -7,25 +7,21 @@ export class MongoTestMemoryServer {
 
   public static async startMongodb() {
     if (!this.mongod) {
-      this.mongod = new MongoMemoryServer({
+      this.mongod = await MongoMemoryServer.create({
         instance: {
           port: 27017,
           ip: '127.0.0.1',
           dbName: 'default-database',
         },
         binary: {},
-        autoStart: false,
       });
-    }
-    if (!(await this.mongod.getInstanceInfo())) {
-      await this.mongod.start();
     }
     return this.mongod;
   }
 
   public static async stopMongodb() {
     if (this.mongod) {
-      await this.mongod.stop();
+      await this.mongod.stop(true);
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }

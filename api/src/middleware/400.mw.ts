@@ -3,6 +3,7 @@ import { ValidateError } from 'tsoa';
 import Logger from '../common/logger';
 
 const logger = Logger.child({ service: 'ValidateErrorMiddleware' });
+
 export default function (
   err: Error,
   req: Request,
@@ -16,4 +17,6 @@ export default function (
       details: err?.fields,
     });
   }
+
+  next();
 }

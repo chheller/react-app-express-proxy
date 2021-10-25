@@ -24,7 +24,7 @@ export class MongoDbConnection {
           ? {
               authSource: 'admin',
               auth: {
-                user: config.mongo.username,
+                username: config.mongo.username,
                 password: config.mongo.password,
               },
             }
