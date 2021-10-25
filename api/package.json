@@ -8,8 +8,9 @@
     "start": "node dist",
     "start:dev": "concurrently -n TSOA,SERVER -c blue,green npm:watch-tsoa \"ts-node-dev --respawn src\"",
     "build": "tsoa spec-and-routes && tsc",
-    "watch-tsoa": "nodemon -w src -x tsoa spec-and-routes",
-    "test": "nyc jest"
+    "watch-tsoa": "nodemon -w src -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
+    "test": "nyc jest",
+    "test-watch": "jest --watch"
   },
   "nyc": {
     "include": "src/**",

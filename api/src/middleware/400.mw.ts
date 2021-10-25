@@ -17,6 +17,5 @@ export default function (
       details: err?.fields,
     });
   }
-
-  next();
+  next(err);
 }

@@ -1,19 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
+import Logger from '../common/logger';
+
+const logger = Logger.child({ service: '500ErrorMiddleware' });
 
 export default function (
   err: Error,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) {
   if (err instanceof Error) {
-    console.error(err);
-    if (process.env['NODE_ENV'] === 'development') {
-      return res.status(500).json({ error: err });
-    }
-    return res.status(500).json({
+    logger.error(err);
+    res.status(500).json({
       message: 'Internal Server Error',
     });
   }
-  next();
 }

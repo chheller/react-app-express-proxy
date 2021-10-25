@@ -1,5 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
+import Logger from '../common/logger';
 
-export default function (req: Request, res: Response, next: NextFunction) {
-  return res.status(404).send(`${req.originalUrl} not found`);
+const logger = Logger.child({ service: '404Middleware' });
+export default function (req: Request, res: Response) {
+  logger.info('Route not found', { url: req.originalUrl });
+  res.status(404).send(`${req.originalUrl} not found`);
 }
