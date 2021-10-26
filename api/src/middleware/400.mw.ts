@@ -11,8 +11,10 @@ export default function (
   next: NextFunction
 ) {
   if (err instanceof ValidateError) {
-    logger.warn(`Caught validation error for ${req.path}:`, err.fields);
-    return res.status(400).json({
+    logger.warn(err.message, {
+      fields: err.fields,
+    });
+    return res.status(err.status).json({
       message: 'Validation Failed',
       details: err?.fields,
     });

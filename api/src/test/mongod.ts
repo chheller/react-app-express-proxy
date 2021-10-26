@@ -16,14 +16,26 @@ export class MongoTestMemoryServer {
         binary: {},
       });
     }
+    if (this.mongod.state === 'stopped') {
+      this.mongod.start();
+    }
+
     return this.mongod;
   }
 
   public static async stopMongodb() {
+    console.log('Shutting down Mongod ...');
+    const tearDownMongoStart = process.hrtime();
+
+    if (this.connection) {
+      await this.closeMongooseConnection();
+    }
     if (this.mongod) {
       await this.mongod.stop(true);
-      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
+    console.log(
+      `Mongod down in ${process.hrtime(tearDownMongoStart)[1] / 1000000}ms`
+    );
   }
 
   public static async getMongooseConnection() {
@@ -31,5 +43,11 @@ export class MongoTestMemoryServer {
       this.connection = await createConnection('mongodb://127.0.0.1:27017');
     }
     return this.connection;
+  }
+
+  public static async closeMongooseConnection() {
+    if (this.connection) {
+      this.connection.close();
+    }
   }
 }

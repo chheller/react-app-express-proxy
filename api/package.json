@@ -6,11 +6,12 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist",
-    "start:dev": "concurrently -n TSOA,SERVER -c blue,green npm:watch-tsoa \"ts-node-dev --respawn src\"",
+    "start:dev": "concurrently -n TSOA,TSC,API -c blue,green,yellow npm:tsoa:watch npm:build:watch \"nodemon -w dist start\"",
     "build": "tsoa spec-and-routes && tsc",
-    "watch-tsoa": "nodemon -w src -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
-    "test": "nyc jest",
-    "test-watch": "jest --watch"
+    "tsoa:watch": "nodemon -w src -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
+    "build:watch": "tsc -w --incremental",
+    "test": "jest",
+    "test:ci": "nyc jest"
   },
   "nyc": {
     "include": "src/**",

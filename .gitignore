@@ -4,5 +4,6 @@ volumes
 api/.nyc_output
 api/coverage
 api/dist
+api/data
 
 .DS_Store

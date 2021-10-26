@@ -1,14 +1,16 @@
 import { Connection } from 'mongoose';
 import axios from '../../test/axios';
 import { MongoTestMemoryServer } from '../../test/mongod';
+import { TestApp } from '../../test/server';
 import mockUsers from './user.mock.json';
 import { CreateUserDTO, User } from './user.model';
-
 describe('feature/users', () => {
   jest.setTimeout(10000);
 
   let conn: Connection;
   beforeAll(async () => {
+    await MongoTestMemoryServer.startMongodb();
+    await TestApp.startServer();
     conn = await MongoTestMemoryServer.getMongooseConnection();
   });
 
@@ -21,7 +23,8 @@ describe('feature/users', () => {
   });
 
   afterAll(async () => {
-    await conn.close();
+    await TestApp.stopServer();
+    await MongoTestMemoryServer.stopMongodb();
   });
 
   it('POST - Should create a user', async () => {
@@ -46,23 +49,19 @@ describe('feature/users', () => {
     expect(response.status).toBe(200);
   });
 
-  const userPatchProperties: Array<{
-    key: keyof CreateUserDTO;
-    value: unknown;
-  }> = [
-    { key: 'avatarUrl', value: 'new avatar url' },
-    { key: 'emailAddress', value: 'newemailaddress@email.com' },
-    { key: 'familyName', value: 'new family name' },
-    { key: 'givenName', value: 'new given name' },
-    { key: 'preferredName', value: 'a new preferred name' },
-  ];
-
-  userPatchProperties.forEach((key, value) => {
+  const userPatchProperties: CreateUserDTO = {
+    avatarUrl: 'new avatar url',
+    emailAddress: 'newemailaddress@email.com',
+    familyName: 'new family name',
+    givenName: 'new given name',
+    preferredName: 'a new preferred name',
+  };
+  Object.entries(userPatchProperties).forEach(([key, value]) => {
     it('PATCH - Should partially update a user', async () => {
       const response = await axios.patch(
         '/users/31aee520-f06c-42ce-bda2-60ecaa8b2aff',
         {
-          [key as any]: value,
+          [key]: value,
         }
       );
       expect(response.status).toBe(200);

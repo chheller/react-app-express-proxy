@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import 'reflect-metadata';
 import config from '../common/configuration';
 import { iocContainer } from '../common/ioc';
+import Logger from '../common/logger';
 import { MongoDbConnection } from '../db/mongo/mongo-db';
 import error400Middleware from '../middleware/400.mw';
 import error404Middleware from '../middleware/404.mw';
@@ -15,36 +16,33 @@ import error500Middleware from '../middleware/500.mw';
 // @ts-ignore
 import { RegisterRoutes } from '../routes';
 
+const logger = Logger.child({ service: 'App' });
 export async function initializeApp(serverConfiguration?: any) {
-  try {
-    const mongooseConnection = await MongoDbConnection.getConnection();
-    if (isNil(mongooseConnection))
-      throw new Error('Unable to connect to mongo');
+  const mongooseConnection = await MongoDbConnection.getConnection();
 
-    iocContainer
-      .bind<Connection>(Connection)
-      .toConstantValue(mongooseConnection);
+  if (isNil(mongooseConnection)) throw new Error('Unable to connect to mongo');
 
-    iocContainer.load(buildProviderModule());
+  iocContainer.bind<Connection>(Connection).toConstantValue(mongooseConnection);
 
-    const app = Express();
+  iocContainer.load(buildProviderModule());
 
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    app.use(cookieParser(config.cookieSecret));
-    app.use(morgan('dev'));
+  const app = Express();
 
-    RegisterRoutes(app);
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(cookieParser(config.cookieSecret));
+  app.use(
+    morgan('tiny', { stream: { write: (message) => logger.info(message) } })
+  );
 
-    app.use(error400Middleware);
-    app.use(error500Middleware);
+  RegisterRoutes(app);
 
-    app.use(error404Middleware);
+  app.use(error400Middleware);
+  app.use(error500Middleware);
 
-    return app;
-  } catch (err) {
-    throw err;
-  }
+  app.use(error404Middleware);
+
+  return app;
 }
 
 export async function listen() {}

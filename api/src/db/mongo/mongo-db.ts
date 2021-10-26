@@ -18,7 +18,7 @@ export class MongoDbConnection {
       const connectionString = `mongodb://${config.mongo.hostname}:${config.mongo.port}`;
       this.logger.info(`Connecting to ${connectionString} MongoDb`);
 
-      this.connection = createConnection(connectionString, {
+      this.connection = await createConnection(connectionString, {
         dbName: config.mongo.database,
         ...(config.mongo.username && config.mongo.password
           ? {
@@ -29,7 +29,7 @@ export class MongoDbConnection {
               },
             }
           : {}),
-      });
+      }).asPromise();
       return this.connection;
     } catch (err) {
       this.logger.error(`Error connecting to mongo`, err);

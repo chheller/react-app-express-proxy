@@ -1,11 +1,14 @@
 import winston, { format, transports } from 'winston';
 import config from './configuration';
 
-export default winston.createLogger({
+const Logger = winston.createLogger({
   level: config.loggerLevel,
-  transports: [
-    new transports.Console({
-      format: format.colorize({ all: true }),
-    }),
-  ],
+  format: format.combine(
+    format.prettyPrint(),
+    format.timestamp(),
+    format.colorize()
+  ),
+  transports: [new transports.Console()],
 });
+
+export default Logger;
