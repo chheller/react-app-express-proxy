@@ -13,7 +13,6 @@ export class UserService extends BaseService<User> {
   }
 
   public async create(user: CreateUserDTO): Promise<User> {
-    const userId = v4();
-    return super.create({ ...user, userId });
+    return super.create({ ...user, userId: v4() });
   }
 }

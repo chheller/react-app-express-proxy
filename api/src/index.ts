@@ -4,7 +4,7 @@ import { initializeApp } from './server/server';
 const logger = Logger.child({ service: 'App' });
 (async () => {
   try {
-    const app = await initializeApp();
+    const [app] = await initializeApp();
     await app.listen(8080);
   } catch (error) {
     logger.error('Error initializing application', { error });

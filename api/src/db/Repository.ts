@@ -1,3 +1,5 @@
+import { Connection } from 'mongoose';
+
 export interface Repository<EntityType> {
   create(model: EntityType): Promise<EntityType>;
   update(query: any, model: EntityType): Promise<[number, ...EntityType[]]>;
@@ -19,3 +21,8 @@ export type SortOptions =
   | 'descending'
   | '1'
   | '-1';
+
+export abstract class MongoPersistence {
+  abstract getConnection(): Promise<Connection>;
+  abstract close(): Promise<void>;
+}
