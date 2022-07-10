@@ -6,7 +6,8 @@ import { FindOptions, Repository } from '../Repository';
 
 @injectable()
 export abstract class BaseRepository<Entity = Record<string, any>>
-  implements Repository<Entity> {
+  implements Repository<Entity>
+{
   protected logger: WinstonLogger;
   protected model: Model<Document<Entity>>;
 
@@ -18,12 +19,15 @@ export abstract class BaseRepository<Entity = Record<string, any>>
     this.logger = Logger.child({ repository: this.modelName });
     this.logger.info(`Creating repository for ${this.modelName} schema.`);
     this.model = this.connection.model(this.modelName, this.schema);
+    this.logger.info(
+      `Created model for ${this.model.collection.name} collection`
+    );
   }
 
   async create(entity: Entity): Promise<Entity> {
     try {
       const doc = await this.model.create(new this.model(entity));
-      return (doc.toJSON() as unknown) as Entity;
+      return doc.toJSON() as unknown as Entity;
     } catch (err) {
       this.logger.error(
         `Error on collection:${this.model.collection.name} performing create() query`,
@@ -50,21 +54,28 @@ export abstract class BaseRepository<Entity = Record<string, any>>
     };
 
     try {
-      return (this.model
+      this.logger.info(`Querying ${this.modelName}`, { query, options });
+      return this.model
         .find(query)
         .skip(skip)
         .limit(limit)
         .sort(sort)
         .lean()
-        .exec() as unknown) as Entity[];
+        .exec() as unknown as Entity[];
     } catch (err) {
       throw err;
     }
   }
 
-  public async findOne(query: any): Promise<Entity> {
+  public async findOne(query: any): Promise<Entity | null> {
     try {
-      return (this.model.findOne(query).lean().exec() as unknown) as Entity;
+      this.logger.info(`Querying ${this.modelName}`, { query });
+      const result = (await this.model
+        .findOne(query)
+        .lean()
+        .exec()) as unknown as Entity | null;
+      this.logger.info('Got result from query', { result });
+      return result;
     } catch (err) {
       this.logger.error(
         `Error on collection:${this.model.collection.name} performing findOne() query`,

@@ -7,8 +7,9 @@ import { FindOptions } from '../db/Repository';
 export abstract class BaseService<Entity extends Record<string, any>> {
   protected repository!: BaseRepository<Entity>;
   protected logger = Logger.child({ service: 'Base Service' });
-  public findById(id: string): Promise<Entity> {
-    return this.repository.findOne({ id });
+  public findById(id: { [key: string]: string }): Promise<Entity | null> {
+    this.logger.info('Finding entity by id', id);
+    return this.repository.findOne(id);
   }
 
   public find(unsanitizedQuery: any, options?: FindOptions): Promise<Entity[]> {

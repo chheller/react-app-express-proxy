@@ -26,7 +26,7 @@ export class UserController extends Controller {
   @Get(':id')
   async getUser(@Path('id') userId: string) {
     this.logger.info('Fetching user', { userId });
-    return this.service.findById(userId);
+    return this.service.findById({ userId });
   }
 
   @Get(':attribute/:value')

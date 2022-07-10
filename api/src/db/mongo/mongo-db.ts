@@ -21,7 +21,7 @@ export class MongoRepository extends MongoPersistence {
   async getConnection() {
     try {
       const connectionString = `mongodb://${config.mongo.hostname}:${config.mongo.port}`;
-      this.logger.info(`Connecting to ${connectionString} MongoDb`);
+      this.logger.info(`Connecting to MongoDb @ ${connectionString} `);
 
       return createConnection(connectionString, {
         dbName: config.mongo.database,

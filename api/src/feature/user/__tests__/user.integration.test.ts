@@ -1,7 +1,3 @@
-import { genericApiTestFactory } from '../../../common/__test__/generic-api-tests';
-import { MongoMemoryRepository } from '../../../db/mongo/mongo-db-memory';
-import { MongoPersistence } from '../../../db/Repository';
-import mockUsers from './user.mock.json';
 /**
  * /user
  *  GET
@@ -26,26 +22,23 @@ import mockUsers from './user.mock.json';
  *      - Should receive a 404 when no user exists for the given id *** Also good for TDD, but somewhat tautological
  */
 
-let mongo: MongoPersistence;
-genericApiTestFactory(
-  {
-    primaryId: 'userId',
-    resource: 'users',
-    skipSuites: ['GET'],
-    setupSuite: async () => {
-      mongo = new MongoMemoryRepository();
-    },
-    teardownSuite: async () => {
-      mongo.close();
-    },
-    setupData: async () => {
-      const conn = await mongo.getConnection();
-      conn.collection('users').insertMany(mockUsers);
-    },
-    cleanupData: async () => {
-      const conn = await mongo.getConnection();
-      conn.collection('users').drop();
-    },
-  },
-  mockUsers
-);
+import axios from '../../../test/axios';
+import { seedCollection } from '../../../test/seed-mongodb';
+import { User } from '../user.model';
+import { mockUser } from './user.mock';
+
+describe('Controller - User', () => {
+  describe('ReST Unit Tests', () => {
+    beforeAll(async () => {
+      await seedCollection('users', [mockUser]);
+    });
+
+    it('Should get a user', async () => {
+      const { status, data } = await axios.get<User>(
+        `users/31aee520-f06c-42ce-bda2-60ecaa8b2aff`
+      );
+      expect(status).toBe(200);
+      expect(data).toStrictEqual(mockUser);
+    });
+  });
+});

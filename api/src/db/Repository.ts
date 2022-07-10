@@ -5,7 +5,7 @@ export interface Repository<EntityType> {
   update(query: any, model: EntityType): Promise<[number, ...EntityType[]]>;
   delete(query: any): Promise<number>;
   find(query: any, options: FindOptions): Promise<EntityType[]>;
-  findOne(query: any, options: FindOptions): Promise<EntityType>;
+  findOne(query: any, options: FindOptions): Promise<EntityType | null>;
 }
 
 export interface FindOptions {

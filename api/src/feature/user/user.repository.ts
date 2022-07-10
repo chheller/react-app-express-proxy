@@ -8,7 +8,7 @@ export class UserRepository extends BaseRepository<User> {
   constructor(@inject(Connection) connection: Connection) {
     super(
       connection,
-      'users',
+      'user',
       new Schema({
         givenName: String,
         familyName: String,
