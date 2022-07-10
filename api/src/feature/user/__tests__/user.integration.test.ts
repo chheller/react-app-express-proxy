@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import axios from '../../../test/axios';
 /**
- * /user
- *  GET
- *    /:id
- *      - Should be able to get a user given an ID
- *        - Should receive a 204 if a user with a given ID is not found
- *    /:attribute/:value
- *      - Should be able to get a list of users matching a given attribute
- *      - Should receive an empty list if no users match the given attribute
+ * /users
  *  POST
  *    /
  *      - Should be able to create a new valid user
  *      - Should not be able to create a user with missing or invalid properties
+ *  GET
+ *    /:id
+ *      - Should be able to get a user given an ID
+ *      - Should receive a 204 if a user with a given ID is not found
+ *    /:attribute/:value
+ *      - Should be able to get a list of users matching a given attribute
+ *      - Should receive an empty list if no users match the given attribute
  *  PATCH
  *    /:id
  *      - Should be able to update each property of the user object individually
@@ -30,6 +30,15 @@ import { mockBaseUser, mockUser } from './user.mock';
 describe('User Controller', () => {
   before(async () => {
     await seedCollection('users', [mockUser]);
+  });
+
+  describe('POST', () => {
+    it('Should create a new user', async () => {
+      const { status, data } = await axios.post<User>('users', mockBaseUser);
+      expect(status).to.equal(200);
+      expect(data).to.include(mockBaseUser);
+    });
+    it('Should not create a new user with invalid properties', async () => {});
   });
 
   describe('GET', () => {
@@ -54,18 +63,12 @@ describe('User Controller', () => {
     });
     it('Should receive an empty list if no user matches the given attributes', async () => {});
   });
-  describe('POST', () => {
-    it('Should create a new user', async () => {
-      const { status, data } = await axios.post<User>('users', mockBaseUser);
-      expect(status).to.equal(200);
-      expect(data).to.include(mockBaseUser);
-    });
-    it('Should not create a new user with invalid properties', async () => {});
-  });
+
   describe('PATCH', () => {
     it('Should update an existing user', async () => {});
     it('Should receive a 404 if no user exists for the given userId', async () => {});
   });
+
   describe.skip('DELETE', () => {
     it('Should delete an existing user', async () => {
       const { status } = await axios.delete<User>(`/users/${mockUser.userId}`);
