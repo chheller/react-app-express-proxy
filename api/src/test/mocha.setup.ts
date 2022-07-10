@@ -7,7 +7,6 @@ export async function mochaGlobalSetup(this: {
   mongod: MongoMemoryServer;
 }) {
   try {
-    console.log('Mocha setup started');
     this.mongod = await MongoMemoryServer.create({
       instance: {
         port: parseInt(process.env.MONGO_PORT ?? '27017', 10),
@@ -22,8 +21,6 @@ export async function mochaGlobalSetup(this: {
       await close();
       await server.close();
     };
-
-    console.log('Mocha setup complete');
   } catch (err) {
     console.error(err);
   }

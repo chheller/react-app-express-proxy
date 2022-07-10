@@ -1,0 +1,27 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Mocha API Tests",
+      "cwd": "${workspaceFolder}/api",
+      "runtimeArgs": [
+        "${workspaceRoot}/api/node_modules/mocha/bin/_mocha",
+        "--config=.mocharc.js"
+        "--inspect-brk",
+        "--watch"
+      ],
+      "env": {
+        "DOTENV_CONFIG_PATH":".env.test",
+        "MONGOMS_DEBUG": "0"
+      }, 
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229
+    }
+  ]
+}

@@ -35,7 +35,6 @@ describe('Controller - User', () => {
     });
 
     it('Should get a user', async () => {
-      console.log('fetching data');
       const { status, data } = await axios.get<User>(
         'users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'
       );

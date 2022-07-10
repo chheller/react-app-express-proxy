@@ -19,6 +19,12 @@ async function mongoDisconnect(db: Db & { con?: MongoClient }) {
 
 export async function seedCollection(collection: string, data: any) {
   const database = await getDb();
+
+  try {
+    await database.collection(collection).drop();
+  } catch (err) {
+    // Ignore ns not found error
+  }
   await database.collection(collection).insertMany(data);
   await mongoDisconnect(db);
 }

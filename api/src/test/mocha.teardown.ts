@@ -5,10 +5,8 @@ export async function mochaGlobalTeardown(this: {
   mongod: MongoMemoryServer;
 }) {
   try {
-    console.log('Mocha teardown started');
     await this.close();
     await this.mongod.stop({ doCleanup: true, force: true });
-    console.log('Mocha teardown completed');
   } catch (err) {
     console.error(err);
   }
