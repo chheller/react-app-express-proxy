@@ -6,9 +6,8 @@ import axios from '../../../test/axios';
  *    /:id
  *      - Should be able to get a user given an ID
  *        - Should receive a 204 if a user with a given ID is not found
- *    /?attribute=value
+ *    /:attribute/:value
  *      - Should be able to get a list of users matching a given attribute
- *      - Should be able to find a list containing at least one user with all possible attributes specified
  *      - Should receive an empty list if no users match the given attribute
  *  POST
  *    /
@@ -53,7 +52,6 @@ describe('User Controller', () => {
       expect(data).to.be.instanceOf(Array);
       expect(data).to.have.length.greaterThan(0);
     });
-    it('Should find a user using all attributes', async () => {});
     it('Should receive an empty list if no user matches the given attributes', async () => {});
   });
   describe('POST', () => {
