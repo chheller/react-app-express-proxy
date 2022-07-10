@@ -9,14 +9,17 @@ export class UserRepository extends BaseRepository<User> {
     super(
       connection,
       'user',
-      new Schema({
-        givenName: String,
-        familyName: String,
-        preferredName: String,
-        emailAddress: String,
-        userId: String,
-        avatarUrl: String,
-      })
+      new Schema(
+        {
+          givenName: String,
+          familyName: String,
+          preferredName: String,
+          emailAddress: String,
+          userId: String,
+          avatarUrl: String,
+        },
+        { versionKey: false }
+      )
     );
   }
 }
