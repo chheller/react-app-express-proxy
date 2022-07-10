@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+import axios from '../../../test/axios';
 /**
  * /user
  *  GET
@@ -22,23 +24,23 @@
  *      - Should receive a 404 when no user exists for the given id *** Also good for TDD, but somewhat tautological
  */
 
-import axios from '../../../test/axios';
 import { seedCollection } from '../../../test/seed-mongodb';
 import { User } from '../user.model';
 import { mockUser } from './user.mock';
 
 describe('Controller - User', () => {
   describe('ReST Unit Tests', () => {
-    beforeAll(async () => {
+    before(async () => {
       await seedCollection('users', [mockUser]);
     });
 
     it('Should get a user', async () => {
+      console.log('fetching data');
       const { status, data } = await axios.get<User>(
-        `users/31aee520-f06c-42ce-bda2-60ecaa8b2aff`
+        'users/31aee520-f06c-42ce-bda2-60ecaa8b2aff'
       );
-      expect(status).toBe(200);
-      expect(data).toStrictEqual(mockUser);
+      expect(status).to.deep.equal(200);
+      expect(data).to.deep.equal(mockUser);
     });
   });
 });

@@ -20,4 +20,5 @@ async function mongoDisconnect(db: Db & { con?: MongoClient }) {
 export async function seedCollection(collection: string, data: any) {
   const database = await getDb();
   await database.collection(collection).insertMany(data);
+  await mongoDisconnect(db);
 }

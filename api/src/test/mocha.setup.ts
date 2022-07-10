@@ -1,0 +1,30 @@
+import 'dotenv/config';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { initializeApp } from '../server/server';
+
+export async function mochaGlobalSetup(this: {
+  close: () => Promise<void>;
+  mongod: MongoMemoryServer;
+}) {
+  try {
+    console.log('Mocha setup started');
+    this.mongod = await MongoMemoryServer.create({
+      instance: {
+        port: parseInt(process.env.MONGO_PORT ?? '27017', 10),
+        ip: process.env.MONGO_HOSTNAME,
+        dbName: process.env.MONGO_DATABASE,
+      },
+      binary: {},
+    });
+    const [app, close] = await initializeApp();
+    const server = await app.listen(8888);
+    this.close = async () => {
+      await close();
+      await server.close();
+    };
+
+    console.log('Mocha setup complete');
+  } catch (err) {
+    console.error(err);
+  }
+}

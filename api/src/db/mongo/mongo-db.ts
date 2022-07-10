@@ -10,7 +10,7 @@ export class MongoRepository extends MongoPersistence {
 
   async close() {
     if (this.connection) {
-      await this.connection.close();
+      await this.connection.close(true);
     }
   }
 
@@ -23,7 +23,7 @@ export class MongoRepository extends MongoPersistence {
       const connectionString = `mongodb://${config.mongo.hostname}:${config.mongo.port}`;
       this.logger.info(`Connecting to MongoDb @ ${connectionString} `);
 
-      return createConnection(connectionString, {
+      return await createConnection(connectionString, {
         dbName: config.mongo.database,
         ...(config.mongo.username && config.mongo.password
           ? {

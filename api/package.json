@@ -11,8 +11,7 @@
     "build": "tsoa spec-and-routes && tsc",
     "tsoa:watch": "nodemon -w src -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
     "build:watch": "tsc --watch --preserveWatchOutput --incremental",
-    "test": "DOTENV_CONFIG_PATH=.env.test jest --forceExit",
-    "test:ci": "DOTENV_CONFIG_PATH=.env.test nyc jest --collectCoverage=true --forceExit"
+    "test": "DOTENV_CONFIG_PATH=.env.test nyc mocha"
   },
   "nyc": {
     "include": "src/**",
@@ -23,7 +22,6 @@
     ]
   },
   "dependencies": {
-    "@types/jest": "^28.1.4",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",
@@ -36,32 +34,39 @@
     "morgan": "^1.10.0",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
+    "supertest": "^6.2.4",
     "tsoa": "^4.1.0",
     "uuid": "^8.3.2",
     "winston": "^3.8.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
+    "@types/chai": "^4.3.1",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.9",
     "@types/lodash": "^4.14.182",
+    "@types/mocha": "^9.1.1",
     "@types/morgan": "^1.9.2",
     "@types/node": "^18.0.3",
+    "@types/sinon": "^10.0.12",
+    "@types/sinon-chai": "^3.2.8",
+    "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "axios": "^0.27.2",
+    "chai": "^4.3.6",
     "concurrently": "^7.2.2",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "jest": "^28.0.0-alpha.11",
+    "mocha": "^10.0.0",
     "mongodb": "^4.7.0",
     "mongodb-memory-server": "^8.7.2",
     "nodemon": "^2.0.19",
     "nyc": "^15.1.0",
     "prettier": "^2.7.1",
-    "ts-jest": "^28.0.5",
+    "sinon": "^14.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   }

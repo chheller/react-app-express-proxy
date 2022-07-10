@@ -17,37 +17,66 @@ import error500Middleware from '../middleware/500.mw';
 import { RegisterRoutes } from '../routes';
 
 const logger = Logger.child({ service: 'App' });
+
 export async function initializeApp() {
-  const mongo: MongoPersistence = new MongoRepository();
+  try {
+    const mongo: MongoPersistence = new MongoRepository();
 
-  const mongooseConnection = await mongo.getConnection();
+    logger.info('Creating Mongoose connection');
+    const mongooseConnection = await mongo.getConnection();
+    logger.info('Mongoose connection successfully created');
 
-  if (isNil(mongooseConnection)) throw new Error('Unable to connect to mongo');
+    if (isNil(mongooseConnection))
+      throw new Error('Unable to connect to mongo');
 
-  iocContainer.bind<Connection>(Connection).toConstantValue(mongooseConnection);
+    logger.info('Binding Mongoose connection to IoC Container');
+    iocContainer
+      .bind<Connection>(Connection)
+      .toConstantValue(mongooseConnection);
 
-  iocContainer.load(buildProviderModule());
+    iocContainer.load(buildProviderModule());
 
-  const app = Express();
+    const app = Express();
 
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-  app.use(cookieParser(config.cookieSecret));
-  app.use(
-    morgan('tiny', { stream: { write: (message) => logger.info(message) } })
-  );
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(cookieParser(config.cookieSecret));
+    app.use(
+      morgan('tiny', { stream: { write: (message) => logger.info(message) } })
+    );
 
-  RegisterRoutes(app);
+    RegisterRoutes(app);
 
-  app.use(error400Middleware);
-  app.use(error500Middleware);
+    app.use(error400Middleware);
+    app.use(error500Middleware);
 
-  app.use(error404Middleware);
+    app.use(error404Middleware);
 
-  async function close() {
-    logger.info('Closing Mongo connection');
-    await mongo.close();
+    async function close() {
+      logger.info('Closing Mongo connection');
+      await mongo.close();
+
+      setTimeout(function () {
+        console.error('Could not close connections in time, forcing shut down');
+        process.exit(1);
+      }, 30 * 1000);
+
+      process.exit();
+    }
+
+    process.on('SIGINT', async () => {
+      logger.info('Handling SIGINT Signal');
+      await close();
+    });
+    process.on('SIGTERM', async () => {
+      logger.info('Handling SIGTERM Signal');
+      await close();
+    });
+    logger.info('App successfully initialized');
+
+    return [app, close] as const;
+  } catch (error) {
+    logger.error('Unhandled error initializing application', { error });
+    throw error;
   }
-
-  return [app, close] as const;
 }

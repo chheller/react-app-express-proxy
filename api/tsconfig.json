@@ -5,7 +5,7 @@
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "./dist",
-    "types": ["reflect-metadata", "jest"],
+    "types": ["reflect-metadata", "mocha"],
     "removeComments": true,
     "strict": true,
     "noImplicitAny": true,
