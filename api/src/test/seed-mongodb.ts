@@ -1,30 +1,36 @@
-import { Db, MongoClient } from 'mongodb';
+import { MongoClient } from 'mongodb';
+import { usingAsync } from '../../utils/using';
 
-let db: Db & { con?: MongoClient };
 const connectionString = `mongodb://${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}`;
 
 async function getDb() {
-  if (!db) {
-    const con = await MongoClient.connect(connectionString);
-    db = con.db(process.env.MONGO_DATABASE);
-    db.con = con;
-  }
-  return db;
+  const client = await MongoClient.connect(connectionString);
+  const db = client.db(process.env.MONGO_DATABASE);
+  const dispose = () => {
+    mongoDisconnect(client);
+  };
+  return { client, db, dispose };
 }
-async function mongoDisconnect(db: Db & { con?: MongoClient }) {
-  if (db?.con) {
-    await db?.con.close();
+async function mongoDisconnect(client: MongoClient) {
+  if (client) {
+    await client.close();
   }
+}
+
+export async function cleanUpCollection(collection: string) {
+  await usingAsync(await getDb(), async ({ db }) => {
+    try {
+      await db.collection(collection).drop();
+    } catch (err) {
+      // Ignore ns not found error from collection not already existing.
+    }
+  });
 }
 
 export async function seedCollection(collection: string, data: any) {
-  const database = await getDb();
-
-  try {
-    await database.collection(collection).drop();
-  } catch (err) {
-    // Ignore ns not found error
-  }
-  await database.collection(collection).insertMany(data);
-  await mongoDisconnect(db);
+  await cleanUpCollection(collection);
+  await usingAsync(await getDb(), async ({ db }) => {
+    await db.collection(collection).insertMany(data);
+  });
+  console.log(`Seeding ${collection} complete`);
 }

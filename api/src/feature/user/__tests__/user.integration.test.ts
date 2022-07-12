@@ -23,25 +23,40 @@ import axios from '../../../test/axios';
  *      - Should receive a 204 when no user exists for the given id
  */
 
-import { seedCollection } from '../../../test/seed-mongodb';
+import { cleanUpCollection, seedCollection } from '../../../test/seed-mongodb';
 import { User } from '../user.model';
-import { mockBaseUser, mockUser } from './user.mock';
+import { mockUser } from './user.mock';
+
+const mockUserCreateBody = {
+  avatarUrl: 'avatar url',
+  emailAddress: 'notareal@email.com',
+  familyName: 'not a real familyname',
+  givenName: 'not a real givenname',
+  preferredName: 'not a real preferred name',
+};
 
 describe('User Controller', () => {
-  before(async () => {
-    await seedCollection('users', [mockUser]);
-  });
-
   describe('POST', () => {
     it('Should create a new user', async () => {
-      const { status, data } = await axios.post<User>('users', mockBaseUser);
+      const { status, data } = await axios.post<User>(
+        'users',
+        mockUserCreateBody
+      );
       expect(status).to.equal(200);
-      expect(data).to.include(mockBaseUser);
+      expect(data).to.include(mockUserCreateBody);
     });
     it('Should not create a new user with invalid properties', async () => {});
   });
 
   describe('GET', () => {
+    before(async () => {
+      await seedCollection('users', [mockUser]);
+    });
+
+    after(async () => {
+      await cleanUpCollection('users');
+    });
+
     it('Should get a user', async () => {
       const { status, data } = await axios.get<User>(
         `users/${mockUser.userId}`
@@ -61,7 +76,14 @@ describe('User Controller', () => {
       expect(data).to.be.instanceOf(Array);
       expect(data).to.have.length.greaterThan(0);
     });
-    it('Should receive an empty list if no user matches the given attributes', async () => {});
+    it('Should receive an empty list if no user matches the given attributes', async () => {
+      const { status, data } = await axios.get<User>(
+        'users/givenName/A%20Real%20Given%20Name'
+      );
+      expect(status).to.equal(200);
+      expect(data).to.be.instanceOf(Array);
+      expect(data).to.have.length(0);
+    });
   });
 
   describe('PATCH', () => {
