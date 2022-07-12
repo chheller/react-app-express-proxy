@@ -9,7 +9,7 @@
     "start:dev": "concurrently -n TSOA,API -c blue,yellow npm:tsoa:watch nodemon",
     "start:test": "DOTENV_CONFIG_PATH=.env.test yarn start:watch",
     "build": "tsoa spec-and-routes && tsc",
-    "tsoa:watch": "nodemon -w src -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
+    "tsoa:watch": "nodemon -w src/**/*.controller.* -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
     "build:watch": "tsc --watch --preserveWatchOutput --incremental",
     "test": "DOTENV_CONFIG_PATH=.env.test nyc mocha"
   },

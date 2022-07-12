@@ -18,6 +18,10 @@ export abstract class BaseService<Entity extends Record<string, any>> {
     return this.repository.find(sanitizedQuery, options);
   }
 
+  public update(query: any, entity: Partial<Entity>): Promise<Entity | null> {
+    return this.repository.update(query, entity);
+  }
+
   public create(entity: Entity): Promise<Entity> {
     return this.repository.create(entity);
   }

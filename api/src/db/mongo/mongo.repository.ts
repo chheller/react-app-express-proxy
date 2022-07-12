@@ -36,10 +36,24 @@ export abstract class BaseRepository<Entity = Record<string, any>>
       throw new Error('Error performing requested operation');
     }
   }
-  update(query: any, model: Entity): Promise<[number, ...Entity[]]> {
+  async update(query: any, model: Partial<Entity>): Promise<Entity | null> {
+    try {
+      const doc = await this.model.findOneAndUpdate(query, model);
+      return doc?.toJSON() as unknown as Entity;
+    } catch (err) {
+      this.logger.error(
+        `Error on collection:${this.model.collection.name} performing update() query`
+      );
+      throw new Error('Error performing requested operation');
+    }
+  }
+  async updateMany(
+    query: any,
+    models: Entity[]
+  ): Promise<[number, ...Entity[]]> {
     throw new Error('Method not implemented.');
   }
-  delete(query: any): Promise<number> {
+  async delete(query: any): Promise<number> {
     throw new Error('Method not implemented.');
   }
 

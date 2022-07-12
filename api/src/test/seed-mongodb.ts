@@ -32,5 +32,4 @@ export async function seedCollection(collection: string, data: any) {
   await usingAsync(await getDb(), async ({ db }) => {
     await db.collection(collection).insertMany(data);
   });
-  console.log(`Seeding ${collection} complete`);
 }

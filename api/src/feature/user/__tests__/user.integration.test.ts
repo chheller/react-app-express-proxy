@@ -87,8 +87,25 @@ describe('User Controller', () => {
   });
 
   describe('PATCH', () => {
-    it('Should update an existing user', async () => {});
-    it('Should receive a 404 if no user exists for the given userId', async () => {});
+    before(async () => {
+      await seedCollection('users', [mockUser]);
+    });
+    after(async () => {
+      await cleanUpCollection('users');
+    });
+
+    it('Should partially update an existing user', async () => {
+      const { status, data } = await axios.patch<User>(
+        `users/${mockUser.userId}`,
+        { avatarUrl: 'A new url' }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.include({ ...mockUser, avatarUrl: 'A new url' });
+    });
+    it('Should receive a 404 if no user exists for the given userId', async () => {
+      const { status } = await axios.patch('users/not-a-user-id', {});
+      expect(status).to.equal(404);
+    });
   });
 
   describe.skip('DELETE', () => {

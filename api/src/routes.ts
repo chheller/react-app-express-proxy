@@ -157,6 +157,7 @@ export function RegisterRoutes(app: express.Router) {
 
             async function UserController_updateUser(request: any, response: any, next: any) {
             const args = {
+                    userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
                     userPatch: {"in":"body","name":"userPatch","required":true,"ref":"Partial_CreateUserDTO_"},
             };
 

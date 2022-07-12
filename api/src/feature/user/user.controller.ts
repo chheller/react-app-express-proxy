@@ -52,10 +52,21 @@ export class UserController extends Controller {
     return this.service.create(user);
   }
   @Patch(':userId')
-  async updateUser(@Body() userPatch: Partial<CreateUserDTO>) {
+  async updateUser(
+    @Path('userId') userId: string,
+    @Body() userPatch: Partial<CreateUserDTO>
+  ) {
     this.logger.info('Updating user', { user: userPatch });
-    throw new Error('Method not implemented');
-    // return this.service.update(user)
+    const updatedUser = await this.service.update(userId, userPatch);
+    if (updatedUser == undefined) {
+      this.logger.info(`Found no user with userId:${userId}`);
+      this.setStatus(404);
+      return { error: 'Error finding user with given userId' };
+    }
+    this.logger.info(`Found and updated user with userId:${userId}`, {
+      updatedUser,
+    });
+    return updatedUser;
   }
   @Delete(':userId')
   async deleteUser(@Path('userId') userId: string) {
