@@ -16,7 +16,7 @@ import error404Middleware from '../middleware/404.mw';
 import error500Middleware from '../middleware/500.mw';
 import { RegisterRoutes } from '../routes';
 
-const logger = Logger.child({ service: 'App' });
+const logger = Logger.child({ name: 'App' });
 
 export async function initializeApp() {
   try {
@@ -42,7 +42,11 @@ export async function initializeApp() {
     app.use(bodyParser.json());
     app.use(cookieParser(config.cookieSecret));
     app.use(
-      morgan('tiny', { stream: { write: (message) => logger.info(message) } })
+      morgan('tiny', {
+        stream: {
+          write: (message) => Logger.child({ name: 'Request' }).info(message),
+        },
+      })
     );
 
     RegisterRoutes(app);

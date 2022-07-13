@@ -1,12 +1,12 @@
 import { decorate, injectable } from '../common/ioc';
 import Logger from '../common/logger';
-import { BaseRepository } from '../db/mongo/mongo.repository';
+import { MongoRepository } from '../db/mongo/mongo.repository';
 import { sanitizeSearchQuery } from '../db/mongo/sanitize';
 import { FindOptions } from '../db/Repository';
 
 export abstract class BaseService<Entity extends Record<string, any>> {
-  protected repository!: BaseRepository<Entity>;
-  protected logger = Logger.child({ service: 'Base Service' });
+  protected repository!: MongoRepository<Entity>;
+  protected logger = Logger.child({ name: this.constructor.name });
   public findById(id: { [key: string]: string }): Promise<Entity | null> {
     this.logger.info('Finding entity by id', id);
     return this.repository.findOne(id);

@@ -1,24 +1,13 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Patch,
-  Path,
-  Post,
-  Query,
-  Route,
-} from 'tsoa';
+import { Body, Delete, Get, Patch, Path, Post, Query, Route } from 'tsoa';
 import { inject, provideSingleton } from '../../common/ioc';
-import Logger from '../../common/logger';
 import { SortOptions } from '../../db/Repository';
+import BaseController from '../base-controller';
 import { CreateUserDTO } from './user.model';
 import { UserService } from './user.service';
 
 @Route('users')
 @provideSingleton(UserController)
-export class UserController extends Controller {
-  private logger = Logger.child({ controller: 'User Controller' });
+export class UserController extends BaseController {
   constructor(@inject(UserService) private service: UserService) {
     super();
     this.logger.info('Creating User Controller');

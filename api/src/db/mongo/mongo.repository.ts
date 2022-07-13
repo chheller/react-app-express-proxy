@@ -5,7 +5,7 @@ import Logger from '../../common/logger';
 import { FindOptions, Repository } from '../Repository';
 
 @injectable()
-export abstract class BaseRepository<Entity = Record<string, any>>
+export abstract class MongoRepository<Entity = Record<string, any>>
   implements Repository<Entity>
 {
   protected logger: WinstonLogger;
@@ -16,7 +16,7 @@ export abstract class BaseRepository<Entity = Record<string, any>>
     @unmanaged() protected modelName: string,
     @unmanaged() protected schema: Schema
   ) {
-    this.logger = Logger.child({ repository: this.modelName });
+    this.logger = Logger.child({ name: this.constructor.name });
     this.logger.info(`Creating repository for ${this.modelName} schema.`);
     this.model = this.connection.model(this.modelName, this.schema);
     this.logger.info(

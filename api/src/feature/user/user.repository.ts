@@ -1,10 +1,10 @@
 import { Connection, Schema } from 'mongoose';
 import { inject, provideSingleton } from '../../common/ioc';
-import { BaseRepository } from '../../db/mongo/mongo.repository';
+import { MongoRepository } from '../../db/mongo/mongo.repository';
 import { User } from './user.model';
 
 @provideSingleton(UserRepository)
-export class UserRepository extends BaseRepository<User> {
+export class UserRepository extends MongoRepository<User> {
   constructor(@inject(Connection) connection: Connection) {
     super(
       connection,
