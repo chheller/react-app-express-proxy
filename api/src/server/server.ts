@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import Express from 'express';
+import correlator from 'express-correlation-id';
 import { buildProviderModule } from 'inversify-binding-decorators';
 import { isNil } from 'lodash';
 import { Connection } from 'mongoose';
@@ -15,7 +16,6 @@ import error400Middleware from '../middleware/400.mw';
 import error404Middleware from '../middleware/404.mw';
 import error500Middleware from '../middleware/500.mw';
 import { RegisterRoutes } from '../routes';
-
 const logger = Logger.child({ name: 'App' });
 
 export async function initializeApp() {
@@ -37,7 +37,7 @@ export async function initializeApp() {
     iocContainer.load(buildProviderModule());
 
     const app = Express();
-
+    app.use(correlator());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use(cookieParser(config.cookieSecret));

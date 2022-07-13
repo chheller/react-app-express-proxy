@@ -1,14 +1,11 @@
 import { injectable, unmanaged } from 'inversify';
 import { Connection, Document, Model, Schema } from 'mongoose';
-import { Logger as WinstonLogger } from 'winston';
-import Logger from '../../common/logger';
 import { FindOptions, Repository } from '../Repository';
 
 @injectable()
-export abstract class MongoRepository<Entity = Record<string, any>>
-  implements Repository<Entity>
-{
-  protected logger: WinstonLogger;
+export abstract class MongoRepository<
+  Entity = Record<string, any>
+> extends Repository<Entity> {
   protected model: Model<Document<Entity>>;
 
   constructor(
@@ -16,7 +13,7 @@ export abstract class MongoRepository<Entity = Record<string, any>>
     @unmanaged() protected modelName: string,
     @unmanaged() protected schema: Schema
   ) {
-    this.logger = Logger.child({ name: this.constructor.name });
+    super();
     this.logger.info(`Creating repository for ${this.modelName} schema.`);
     this.model = this.connection.model(this.modelName, this.schema);
     this.logger.info(

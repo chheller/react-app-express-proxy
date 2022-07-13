@@ -17,10 +17,16 @@ const provideSingleton = function <T>(
   return fluentProvide(identifier).inSingletonScope().done(true);
 };
 
+const provideTransient = function <T>(
+  identifier: interfaces.ServiceIdentifier<T>
+) {
+  return fluentProvide(identifier).inTransientScope().done();
+};
 // export according to convention
 export {
   iocContainer,
   provideSingleton,
+  provideTransient,
   injectable,
   inject,
   provide,
