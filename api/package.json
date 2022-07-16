@@ -11,7 +11,8 @@
     "build": "tsoa spec-and-routes && tsc",
     "tsoa:watch": "nodemon -w src/**/*.controller.* -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
     "build:watch": "tsc --watch --preserveWatchOutput --incremental",
-    "test": "DOTENV_CONFIG_PATH=.env.test nyc mocha"
+    "test": "DOTENV_CONFIG_PATH=.env.test nyc mocha",
+    "lint": "eslint --cache"
   },
   "nyc": {
     "include": "src/**",

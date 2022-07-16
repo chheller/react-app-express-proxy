@@ -15,11 +15,11 @@ export abstract class Repository<EntityType> {
     model: EntityType[]
   ): Promise<[number, ...EntityType[]]>;
   public abstract delete(query: any): Promise<number>;
-  public abstract find(query: any, options: FindOptions): Promise<EntityType[]>;
-  public abstract findOne(
+  public abstract find(
     query: any,
-    options: FindOptions
-  ): Promise<EntityType | null>;
+    options?: FindOptions
+  ): Promise<EntityType[]>;
+  public abstract findOne(query: any): Promise<EntityType | null>;
 }
 
 export interface FindOptions {

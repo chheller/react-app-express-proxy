@@ -1,10 +1,10 @@
 import { decorate, injectable } from '../common/ioc';
 import Logger from '../common/logger';
-import { MongoRepository } from '../db/mongo/mongo.repository';
 import { sanitizeSearchQuery } from '../db/mongo/sanitize';
-import { FindOptions } from '../db/Repository';
+import { FindOptions, Repository } from '../db/Repository';
+
 export abstract class BaseService<Entity extends Record<string, any>> {
-  protected repository!: MongoRepository<Entity>;
+  protected repository!: Repository<Entity>;
   protected logger = Logger.child({
     name: this.constructor.name,
   });

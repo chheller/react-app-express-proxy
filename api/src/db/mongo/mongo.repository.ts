@@ -60,7 +60,7 @@ export abstract class MongoRepository<
   ): Promise<Entity[]> {
     const { skip, limit, sort } = {
       skip: 0,
-      limit: 250,
+      limit: 25,
       ...options,
     };
 

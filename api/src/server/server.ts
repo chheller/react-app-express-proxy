@@ -42,7 +42,7 @@ export async function initializeApp() {
     app.use(bodyParser.json());
     app.use(cookieParser(config.cookieSecret));
     app.use(
-      morgan('tiny', {
+      morgan('common', {
         stream: {
           write: (message) => Logger.child({ name: 'Request' }).info(message),
         },
