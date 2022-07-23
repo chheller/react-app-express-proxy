@@ -11,6 +11,7 @@ export interface Configuration {
     database: string;
   };
   loggerLevel: string;
+  returnValidationErrorDetails: boolean;
 }
 
 const config = {
@@ -25,6 +26,10 @@ const config = {
     useMemoryServer: process.env.MONGO_USE_MEMORY_DATABASE ?? false,
   },
   loggerLevel: process.env.LOGGER_LEVEL,
+  returnValidationErrorDetails:
+    process.env.RETURN_VALIDATION_ERROR_DETAILS ?? false,
+  returnInternalServerErrorDetails:
+    process.env.RETURN_INTERNAL_SERVER_ERROR_DETAILS ?? false,
 };
 
 Object.entries(config).forEach(([key, value]) => {
