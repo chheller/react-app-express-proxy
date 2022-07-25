@@ -3,6 +3,8 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AuthenticationController } from './feature/authentication/authentication.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './feature/user/user.controller';
 import { iocContainer } from './common/ioc';
 import { IocContainer, IocContainerFactory } from '@tsoa/runtime';
@@ -12,6 +14,24 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "CreateAuthenticationBody": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"Password must be at least 8 characters","value":8}}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ValidateCredentailBody": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true,"validators":{"minLength":{"errorMsg":"Password must be at least 8 characters","value":8}}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "User": {
         "dataType": "refObject",
         "properties": {
@@ -57,6 +77,66 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.post('/authentication',
+            ...(fetchMiddlewares<RequestHandler>(AuthenticationController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthenticationController.prototype.createNewCredential)),
+
+            async function AuthenticationController_createNewCredential(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"CreateAuthenticationBody"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AuthenticationController>(AuthenticationController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.createNewCredential.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/authentication/validate',
+            ...(fetchMiddlewares<RequestHandler>(AuthenticationController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthenticationController.prototype.validateCredential)),
+
+            async function AuthenticationController_validateCredential(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"ValidateCredentailBody"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AuthenticationController>(AuthenticationController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.validateCredential.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/users/:id',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getUser)),
