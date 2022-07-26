@@ -1,6 +1,5 @@
 import correlator from 'express-correlation-id';
 import winston, { format, transports } from 'winston';
-import config from './configuration';
 
 const correlationIdFormatter = winston.format((info) => {
   const correlationId = correlator.getId();
@@ -11,7 +10,7 @@ const correlationIdFormatter = winston.format((info) => {
 });
 
 const Logger = winston.createLogger({
-  level: config.loggerLevel,
+  level: 'debug',
   format: format.combine(
     correlationIdFormatter(),
     format.prettyPrint(),

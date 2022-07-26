@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { ValidateError } from 'tsoa';
-import config from '../common/configuration';
 import Logger from '../common/logger';
 
 const logger = Logger.child({ name: 'ValidationError' });
@@ -19,7 +18,7 @@ export default function (
     return res.status(err.status).json({
       message: 'Validation Failed',
       // Return the details of the validation only if enabled in the environment e.g. in dev
-      ...(config.returnValidationErrorDetails ? { details: err.fields } : {}),
+      // ...(config.returnValidationErrorDetails ? { details: err.fields } : {}),
     });
   }
   next(err);

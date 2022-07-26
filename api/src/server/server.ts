@@ -1,5 +1,4 @@
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import Express from 'express';
 import correlator from 'express-correlation-id';
 import { buildProviderModule } from 'inversify-binding-decorators';
@@ -7,7 +6,7 @@ import { isNil } from 'lodash';
 import { Connection } from 'mongoose';
 import morgan from 'morgan';
 import 'reflect-metadata';
-import config from '../common/configuration';
+import Configuration, { IConfiguration } from '../common/configuration';
 import { iocContainer } from '../common/ioc';
 import Logger from '../common/logger';
 import { MongoRepository } from '../db/mongo/mongo-db';
@@ -20,8 +19,16 @@ const logger = Logger.child({ name: 'App' });
 
 export async function initializeApp() {
   try {
-    const mongo: MongoPersistence = new MongoRepository();
+    logger.info('Resolving service configuration');
+    await Configuration.initializeConfiguration();
+    logger.info('Resolved service configuration');
 
+    logger.info('Binding config to IoC Container');
+    iocContainer
+      .bind<IConfiguration>('configuration')
+      .toConstantValue(Configuration.config);
+
+    const mongo: MongoPersistence = new MongoRepository(Configuration.config);
     logger.info('Creating Mongoose connection');
     const mongooseConnection = await mongo.getConnection();
     logger.info('Mongoose connection successfully created');
@@ -30,6 +37,7 @@ export async function initializeApp() {
       throw new Error('Unable to connect to mongo');
 
     logger.info('Binding Mongoose connection to IoC Container');
+
     iocContainer
       .bind<Connection>(Connection)
       .toConstantValue(mongooseConnection);
@@ -40,7 +48,6 @@ export async function initializeApp() {
     app.use(correlator());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use(cookieParser(config.cookieSecret));
     app.use(
       morgan('common', {
         stream: {

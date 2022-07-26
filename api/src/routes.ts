@@ -23,7 +23,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ValidateCredentailBody": {
+    "ValidateCredentialBody": {
         "dataType": "refObject",
         "properties": {
             "userId": {"dataType":"string","required":true},
@@ -107,13 +107,13 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/authentication/validate',
+        app.post('/authentication/authenticate',
             ...(fetchMiddlewares<RequestHandler>(AuthenticationController)),
             ...(fetchMiddlewares<RequestHandler>(AuthenticationController.prototype.validateCredential)),
 
             async function AuthenticationController_validateCredential(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"ValidateCredentailBody"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ValidateCredentialBody"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -132,6 +132,35 @@ export function RegisterRoutes(app: express.Router) {
 
               const promise = controller.validateCredential.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/authentication/jwks',
+            ...(fetchMiddlewares<RequestHandler>(AuthenticationController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthenticationController.prototype.getVerificationKey)),
+
+            async function AuthenticationController_getVerificationKey(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AuthenticationController>(AuthenticationController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getVerificationKey.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
             }

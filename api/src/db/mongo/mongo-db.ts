@@ -1,5 +1,6 @@
+import { inject } from 'inversify';
 import { Connection, createConnection } from 'mongoose';
-import config from '../../common/configuration';
+import { IConfiguration } from '../../common/configuration';
 import Logger from '../../common/logger';
 import { MongoPersistence } from '../Repository';
 
@@ -14,23 +15,23 @@ export class MongoRepository extends MongoPersistence {
     }
   }
 
-  constructor() {
+  constructor(@inject('configuration') private config: IConfiguration) {
     super();
   }
 
   async getConnection() {
     try {
-      const connectionString = `mongodb://${config.mongo.hostname}:${config.mongo.port}`;
+      const connectionString = `mongodb://${this.config.mongo.hostname}:${this.config.mongo.port}`;
       this.logger.info(`Connecting to MongoDb @ ${connectionString} `);
 
       return await createConnection(connectionString, {
-        dbName: config.mongo.database,
-        ...(config.mongo.username && config.mongo.password
+        dbName: this.config.mongo.database,
+        ...(this.config.mongo.username && this.config.mongo.password
           ? {
               authSource: 'admin',
               auth: {
-                username: config.mongo.username,
-                password: config.mongo.password,
+                username: this.config.mongo.username,
+                password: this.config.mongo.password,
               },
             }
           : {}),

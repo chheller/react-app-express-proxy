@@ -14,7 +14,7 @@ export interface CreateAuthenticationBody {
   password: string;
 }
 
-export interface ValidateCredentailBody {
+export interface ValidateCredentialBody {
   userId: string;
   /** @minLength 8 Password must be at least 8 characters */
   /** @maxLength 71 Password must be no more than 71 characters */

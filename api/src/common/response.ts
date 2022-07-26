@@ -33,7 +33,7 @@ export class ServerExceptionResponse<K> extends ErrorResponse<K> {
   }
 }
 
-export class NotImplementedResponse extends ErrorResponse<never> {
+export class NotImplementedResponse extends ErrorResponse<null> {
   constructor() {
     super(501, null);
   }
