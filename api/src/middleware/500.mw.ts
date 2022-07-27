@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { IConfiguration } from '../common/configuration';
 import Logger from '../common/logger';
+
 const logger = Logger.child({ name: 'InternalServerError' });
 
+// TODO: Figure out a better way to fit this into IoC
 export default function (
   configuration: IConfiguration,
   err: Error,

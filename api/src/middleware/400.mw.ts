@@ -5,6 +5,7 @@ import Logger from '../common/logger';
 
 const logger = Logger.child({ name: 'ValidationError' });
 
+// TODO: Find a better way to fit this into the Depency injector
 export default function error400Middleware(
   configuration: IConfiguration,
   err: Error,
