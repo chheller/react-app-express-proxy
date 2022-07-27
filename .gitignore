@@ -6,4 +6,6 @@ api/coverage
 api/dist
 api/data
 
+
+.env
 .DS_Store
