@@ -10,7 +10,8 @@ const correlationIdFormatter = winston.format((info) => {
 });
 
 const Logger = winston.createLogger({
-  level: 'debug',
+  level: process.env.LOGGER_LEVEL, // Circular dependency when using Configuration.LOGGER_LEVEL
+
   format: format.combine(
     correlationIdFormatter(),
     format.prettyPrint(),

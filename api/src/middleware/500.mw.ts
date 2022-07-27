@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { IConfiguration } from '../common/configuration';
 import Logger from '../common/logger';
 const logger = Logger.child({ name: 'InternalServerError' });
 
 export default function (
+  configuration: IConfiguration,
   err: Error,
   _req: Request,
   res: Response,
@@ -13,6 +15,6 @@ export default function (
   res.status(500).json({
     message: 'Internal Server Error',
     // Return the details of the validation only if enabled in the environment e.g. in dev
-    // ...(config.returnInternalServerErrorDetails ? { details: err } : {}),
+    ...(configuration.returnInternalServerErrorDetails ? { details: err } : {}),
   });
 }

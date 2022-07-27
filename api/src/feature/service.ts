@@ -1,4 +1,4 @@
-import { decorate, injectable } from '../common/ioc';
+import { decorate, injectable } from 'inversify';
 import Logger from '../common/logger';
 import { sanitizeSearchQuery } from '../db/mongo/sanitize';
 import { FindOptions, Repository } from '../db/Repository';

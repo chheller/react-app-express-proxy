@@ -1,12 +1,6 @@
-import { Container, decorate, inject, injectable, interfaces } from 'inversify';
-import {
-  autoProvide,
-  fluentProvide,
-  provide,
-} from 'inversify-binding-decorators';
+import { Container, decorate, injectable, interfaces } from 'inversify';
+import { fluentProvide } from 'inversify-binding-decorators';
 import { Controller } from 'tsoa';
-
-// Assign a container to `iocContainer`.
 const iocContainer = new Container();
 
 decorate(injectable(), Controller);
@@ -22,14 +16,5 @@ const provideTransient = function <T>(
 ) {
   return fluentProvide(identifier).inTransientScope().done();
 };
-// export according to convention
-export {
-  iocContainer,
-  provideSingleton,
-  provideTransient,
-  injectable,
-  inject,
-  provide,
-  autoProvide,
-  decorate,
-};
+
+export { iocContainer, provideSingleton, provideTransient };

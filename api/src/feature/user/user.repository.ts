@@ -1,5 +1,6 @@
+import { inject } from 'inversify';
 import { Connection, Schema } from 'mongoose';
-import { inject, provideSingleton } from '../../common/ioc';
+import { provideSingleton } from '../../common/ioc';
 import { MongoRepository } from '../../db/mongo/mongo.repository';
 import { User } from './user.model';
 

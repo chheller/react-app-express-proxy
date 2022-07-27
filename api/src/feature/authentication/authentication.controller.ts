@@ -1,5 +1,6 @@
+import { inject } from 'inversify';
 import { Body, Get, Post, Response, Route, SuccessResponse } from 'tsoa';
-import { inject, provideSingleton } from '../../common/ioc';
+import { provideSingleton } from '../../common/ioc';
 import { NotImplementedResponse } from '../../common/response';
 import BaseController from '../base-controller';
 import {

@@ -1,5 +1,6 @@
+import { inject } from 'inversify';
 import { v4 } from 'uuid';
-import { inject, provideSingleton } from '../../common/ioc';
+import { provideSingleton } from '../../common/ioc';
 import { BaseService } from '../service';
 import { CreateUserDTO, User } from './user.model';
 import { UserRepository } from './user.repository';

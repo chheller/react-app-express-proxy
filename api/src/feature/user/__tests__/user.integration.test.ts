@@ -45,7 +45,10 @@ describe('User Controller', () => {
       expect(status).to.equal(200);
       expect(data).to.include(mockUserCreateBody);
     });
-    it('Should not create a new user with invalid properties', async () => {});
+    it('Should not create a new user with invalid properties', async () => {
+      const { status, data } = await axios.post<User>('users', {});
+      expect(status).to.equal(400);
+    });
   });
 
   describe('GET', () => {
