@@ -7,7 +7,6 @@
   "scripts": {
     "start": "node dist",
     "start:dev": "concurrently -n TSOA,API -c blue,yellow npm:tsoa:watch nodemon",
-    "start:test": "DOTENV_CONFIG_PATH=.env.test yarn start:watch",
     "build": "tsoa spec-and-routes && tsc",
     "tsoa:watch": "nodemon -w src/**/*.controller.* -x tsoa spec-and-routes --ext .ts --ignore src/routes.ts",
     "build:watch": "tsc --watch --preserveWatchOutput --incremental",
@@ -22,6 +21,12 @@
       "html"
     ]
   },
+  "nodemon": {
+    "exec": "ts-node src",
+    "watch": ["src"],
+    "ext": "ts"
+  },
+
   "dependencies": {
     "body-parser": "1.20.0",
     "cookie-parser": "1.4.6",

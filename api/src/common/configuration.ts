@@ -36,21 +36,21 @@ export default class Configuration {
 
   private static resolveConfiguration() {
     const requiredParameters = [
+      'RSA_PRIVATE_SIGNING_KEY',
+      'RSA_PUBLIC_SIGNING_KEY',
       'MONGO_HOSTNAME',
       'MONGO_USERNAME',
       'MONGO_PASSWORD',
       'MONGO_DATABASE',
-      'RSA_PUBLIC_SIGNING_KEY',
-      'RSA_PRIVATE_SIGNING_KEY',
     ] as const;
 
     const optionalParameters = {
       PORT: '8080',
-      MONGO_PORT: '27017',
-      MONGO_USE_MEMORY_DATABASE: 'false',
       LOGGER_LEVEL: 'error',
       RETURN_VALIDATION_ERROR_DETAILS: 'false',
       RETURN_INTERNAL_SERVER_ERROR_DETAILS: 'false',
+      MONGO_PORT: '27017',
+      MONGO_USE_MEMORY_DATABASE: 'false',
     } as const;
 
     const resolvedConfigs = {} as Record<
@@ -119,17 +119,17 @@ export default class Configuration {
     Configuration.logger.debug('Initializing service configuration');
     const {
       PORT,
-      MONGO_HOSTNAME,
-      MONGO_DATABASE,
-      MONGO_PASSWORD,
-      MONGO_PORT,
-      MONGO_USERNAME,
-      MONGO_USE_MEMORY_DATABASE,
-      RETURN_VALIDATION_ERROR_DETAILS,
-      RETURN_INTERNAL_SERVER_ERROR_DETAILS,
+      LOGGER_LEVEL,
       RSA_PRIVATE_SIGNING_KEY,
       RSA_PUBLIC_SIGNING_KEY,
-      LOGGER_LEVEL,
+      RETURN_VALIDATION_ERROR_DETAILS,
+      RETURN_INTERNAL_SERVER_ERROR_DETAILS,
+      MONGO_PORT,
+      MONGO_HOSTNAME,
+      MONGO_USERNAME,
+      MONGO_PASSWORD,
+      MONGO_DATABASE,
+      MONGO_USE_MEMORY_DATABASE,
     } = Configuration.resolveConfiguration();
 
     Configuration._config = {
