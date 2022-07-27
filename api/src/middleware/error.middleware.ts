@@ -18,7 +18,7 @@ export default class ErrorMiddleware {
   }
 
   // TODO: Find a better way to fit this into the Depency injector
-  public error400Middleware(
+  private error400Middleware(
     err: Error,
     _req: Request,
     res: Response,
@@ -39,7 +39,7 @@ export default class ErrorMiddleware {
     }
     next(err);
   }
-  public error500Middleware(
+  private error500Middleware(
     err: Error,
     _req: Request,
     res: Response,
@@ -56,7 +56,7 @@ export default class ErrorMiddleware {
     });
   }
 
-  public error404Middleware(req: Request, res: Response) {
+  private error404Middleware(req: Request, res: Response) {
     this.logger.error('Route not found', { url: req.originalUrl });
     return res.status(404).send(`${req.originalUrl} not found`);
   }
