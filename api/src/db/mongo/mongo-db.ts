@@ -1,10 +1,12 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Connection, createConnection } from 'mongoose';
 import { IConfiguration } from '../../common/configuration';
 import Logger from '../../common/logger';
 import { MongoPersistence } from '../Repository';
 
-export class MongoRepository extends MongoPersistence {
+// @provideSingleton(MongoProvider)
+@injectable()
+export class MongoProvider extends MongoPersistence {
   private connection: Connection | undefined;
 
   private logger = Logger.child({ name: 'MongoDB' });
@@ -19,7 +21,7 @@ export class MongoRepository extends MongoPersistence {
     super();
   }
 
-  async getConnection() {
+  async getConnection(): Promise<Connection> {
     try {
       const connectionString = `mongodb://${this.config.mongo.hostname}:${this.config.mongo.port}`;
       this.logger.info(`Connecting to MongoDb @ ${connectionString} `);

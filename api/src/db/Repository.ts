@@ -1,3 +1,4 @@
+import { injectable } from 'inversify';
 import { Connection } from 'mongoose';
 import Logger from '../common/logger';
 
@@ -36,6 +37,7 @@ export type SortOptions =
   | '1'
   | '-1';
 
+@injectable()
 export abstract class MongoPersistence {
   abstract getConnection(): Promise<Connection>;
   abstract close(): Promise<void>;

@@ -22,7 +22,7 @@
       "html"
     ]
   },
-  "nodemon": {
+  "nodemonConfig": {
     "exec": "ts-node src",
     "watch": [
       "src"
