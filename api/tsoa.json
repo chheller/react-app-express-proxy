@@ -8,7 +8,7 @@
   },
   "routes": {
     "routesDir": "src",
-    "iocModule": "./src/common/ioc.ts",
+    "iocModule": "./src/common/ioc",
     "middleware": "express",
     "entryFile": "./src/feature/controller.ts"
   }
