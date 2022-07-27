@@ -7,5 +7,6 @@ api/dist
 api/data
 
 
-.env
+.env*
+!.env.template
 .DS_Store
