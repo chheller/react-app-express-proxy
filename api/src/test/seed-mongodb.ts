@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { usingAsync } from '../../utils/using';
 
-const connectionString = `mongodb://${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}`;
+const connectionString = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}`;
 
 async function getDb() {
   const client = await MongoClient.connect(connectionString);
@@ -30,6 +30,10 @@ export async function cleanUpCollection(collection: string) {
 export async function seedCollection(collection: string, data: any) {
   await cleanUpCollection(collection);
   await usingAsync(await getDb(), async ({ db }) => {
-    await db.collection(collection).insertMany(data);
+    try {
+      await db.collection(collection).insertMany(data);
+    } catch (err) {
+      console.error('Error seeding data');
+    }
   });
 }

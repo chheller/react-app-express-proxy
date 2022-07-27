@@ -6,8 +6,9 @@ export async function mochaGlobalTeardown(this: {
 }) {
   try {
     await this.close();
-    await this.mongod.stop({ doCleanup: true, force: true });
   } catch (err) {
     console.error(err);
+  } finally {
+    await this.mongod.stop({ doCleanup: true, force: true });
   }
 }

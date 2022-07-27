@@ -12,6 +12,16 @@ export async function mochaGlobalSetup(this: {
         port: parseInt(process.env.MONGO_PORT ?? '27017', 10),
         ip: process.env.MONGO_HOSTNAME,
         dbName: process.env.MONGO_DATABASE,
+        auth: true,
+      },
+      auth: {
+        extraUsers: [
+          {
+            createUser: process.env.MONGO_USERNAME!,
+            pwd: process.env.MONGO_PASSWORD!,
+            roles: ['readWrite'],
+          },
+        ],
       },
       binary: {},
     });
@@ -23,5 +33,6 @@ export async function mochaGlobalSetup(this: {
     };
   } catch (err) {
     console.error(err);
+    throw err;
   }
 }

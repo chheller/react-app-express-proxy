@@ -26,15 +26,11 @@ export class MongoRepository extends MongoPersistence {
 
       return await createConnection(connectionString, {
         dbName: this.config.mongo.database,
-        ...(this.config.mongo.username && this.config.mongo.password
-          ? {
-              authSource: 'admin',
-              auth: {
-                username: this.config.mongo.username,
-                password: this.config.mongo.password,
-              },
-            }
-          : {}),
+        authSource: 'admin',
+        auth: {
+          username: this.config.mongo.username,
+          password: this.config.mongo.password,
+        },
       }).asPromise();
     } catch (err) {
       this.logger.error(`Error connecting to mongo`, err);
