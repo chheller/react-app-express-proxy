@@ -9,9 +9,8 @@ echo $env
 # Setup rsa signing keys
 openssl genrsa -out $WORKSPACE/privatekey.pem 4096
 openssl rsa -in $WORKSPACE/privatekey.pem -out $WORKSPACE/publickey.pem -pubout -outform PEM
-
-
 export API_RSA_PRIVATE_SIGNING_KEY=$(cat $WORKSPACE/privatekey.pem)
 export API_RSA_PUBLIC_SIGNING_KEY=$(cat $WORKSPACE/publickey.pem)
 
+# Write out the values to .env
 envsubst < .env.template > .env
