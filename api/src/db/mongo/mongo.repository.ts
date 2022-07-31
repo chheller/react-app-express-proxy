@@ -15,7 +15,6 @@ export abstract class MongoRepository<
   ) {
     super();
     this.logger.info(`Creating repository for ${this.modelName} schema.`);
-    this.logger.info(this.connection);
     this.model = this.connection.model(this.modelName, this.schema);
     this.logger.info(
       `Created model for ${this.model.collection.name} collection`

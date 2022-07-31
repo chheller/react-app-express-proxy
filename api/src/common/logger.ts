@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import correlator from 'express-correlation-id';
 import winston, { format, transports } from 'winston';
 
@@ -10,7 +11,7 @@ const correlationIdFormatter = winston.format((info) => {
 });
 
 const Logger = winston.createLogger({
-  level: process.env.LOGGER_LEVEL, // Circular dependency when using Configuration.LOGGER_LEVEL
+  level: process.env.LOGGER_LEVEL, // Circular dependency when using Configuration.LOGGER_LEVEL so we just
 
   format: format.combine(
     correlationIdFormatter(),
