@@ -7,3 +7,4 @@ export API_MONGO_PORT=27017
 export API_MONGO_USERNAME=mongo_admin
 export API_MONGO_PASSWORD=mongo_secret
 export API_MONGO_DATABASE_NAME=default_database
+export API_MONGO_USE_MEMORY_DATABASE=false
