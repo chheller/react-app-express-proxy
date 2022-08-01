@@ -1,10 +1,10 @@
 import { decorate, injectable } from 'inversify';
 import Logger from '../common/logger';
+import { BaseCRUDRepository, FindOptions } from '../db/base-crud-repository';
 import { sanitizeSearchQuery } from '../db/mongo/sanitize';
-import { FindOptions, Repository } from '../db/Repository';
 
 export abstract class BaseService<Entity extends Record<string, any>> {
-  protected repository!: Repository<Entity>;
+  protected repository!: BaseCRUDRepository<Entity>;
   protected logger = Logger.child({
     name: this.constructor.name,
   });
@@ -17,19 +17,19 @@ export abstract class BaseService<Entity extends Record<string, any>> {
   public find(unsanitizedQuery: any, options?: FindOptions): Promise<Entity[]> {
     const sanitizedQuery = sanitizeSearchQuery(unsanitizedQuery);
     this.logger.info(sanitizedQuery);
-    return this.repository.find(sanitizedQuery, options);
+    return this.repository.findMany(sanitizedQuery, options);
   }
 
   public update(query: any, entity: Partial<Entity>): Promise<Entity | null> {
-    return this.repository.update(query, entity);
+    return this.repository.updateOne(query, entity);
   }
 
   public create(entity: Entity): Promise<Entity> {
-    return this.repository.create(entity);
+    return this.repository.createOne(entity);
   }
 
-  public delete(entityId: string): Promise<number> {
-    return this.repository.delete({ id: entityId });
+  public delete(entityId: string): Promise<void> {
+    return this.repository.deleteOne({ id: entityId });
   }
 }
 

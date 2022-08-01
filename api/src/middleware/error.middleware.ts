@@ -37,7 +37,7 @@ export default class ErrorMiddleware {
           : {}),
       });
     }
-    next(err);
+    return next(err);
   }
   private error500Middleware(
     err: Error,
@@ -47,7 +47,7 @@ export default class ErrorMiddleware {
   ) {
     this.logger.error(err);
     // TODO: Test that middleware only returns details when environment explicitly enables it
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Internal Server Error',
       // Return the details of the validation only if enabled in the environment e.g. in dev
       ...(this.configuration.returnInternalServerErrorDetails

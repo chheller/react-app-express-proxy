@@ -8,10 +8,11 @@ import { iocContainer } from '../common/ioc';
 import configuration from '../common/ioc/modules/configuration';
 import persistence from '../common/ioc/modules/persistence';
 import Logger from '../common/logger';
-import { MongoProvider } from '../db/mongo/mongo-db';
-import { MongoPersistence } from '../db/Repository';
+import { MongoPersistence } from '../db/mongo/mongo-persistence';
+import { MongoProvider } from '../db/mongo/mongo-provider';
 import ErrorMiddleware from '../middleware/error.middleware';
 import { RegisterRoutes } from '../routes';
+
 const logger = Logger.child({ name: 'App' });
 
 export async function initializeApp() {

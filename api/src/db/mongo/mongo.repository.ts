@@ -1,11 +1,11 @@
 import { injectable, unmanaged } from 'inversify';
 import { Connection, Document, Model, Schema } from 'mongoose';
-import { FindOptions, Repository } from '../Repository';
+import { BaseCRUDRepository, FindOptions } from '../base-crud-repository';
 
 @injectable()
-export abstract class MongoRepository<
+export class MongoRepository<
   Entity = Record<string, any>
-> extends Repository<Entity> {
+> extends BaseCRUDRepository<Entity> {
   protected model: Model<Document<Entity>>;
 
   constructor(
@@ -21,7 +21,7 @@ export abstract class MongoRepository<
     );
   }
 
-  async create(entity: Entity): Promise<Entity> {
+  async createOne(entity: Entity): Promise<Entity> {
     try {
       const doc = await this.model.create(new this.model(entity));
       return doc.toJSON() as unknown as Entity;
@@ -33,28 +33,30 @@ export abstract class MongoRepository<
       throw new Error('Error performing requested operation');
     }
   }
-  async update(query: any, model: Partial<Entity>): Promise<Entity | null> {
-    try {
-      const doc = await this.model.findOneAndUpdate(query, model);
-      return doc?.toJSON() as unknown as Entity;
-    } catch (err) {
-      this.logger.error(
-        `Error on collection:${this.model.collection.name} performing update() query`
-      );
-      throw new Error('Error performing requested operation');
-    }
-  }
-  async updateMany(
-    query: any,
-    models: Entity[]
-  ): Promise<[number, ...Entity[]]> {
-    throw new Error('Method not implemented.');
-  }
-  async delete(query: any): Promise<number> {
+
+  public async createMany(entities: Entity[]): Promise<Entity[]> {
     throw new Error('Method not implemented.');
   }
 
-  public async find(
+  public async findOne(query: any): Promise<Entity | null> {
+    try {
+      this.logger.info(`Querying ${this.modelName}`, { query });
+      const result = (await this.model
+        .findOne(query)
+        .lean()
+        .exec()) as unknown as Entity | null;
+      this.logger.info('Got result from query', { result });
+      return result;
+    } catch (err) {
+      this.logger.error(
+        `Error on collection:${this.model.collection.name} performing findOne() query`,
+        err
+      );
+      throw new Error(`Error performing requested operation`);
+    }
+  }
+
+  public async findMany(
     query: any,
     options?: Partial<FindOptions>
   ): Promise<Entity[]> {
@@ -78,21 +80,29 @@ export abstract class MongoRepository<
     }
   }
 
-  public async findOne(query: any): Promise<Entity | null> {
+  async updateOne(query: any, model: Partial<Entity>): Promise<Entity | null> {
     try {
-      this.logger.info(`Querying ${this.modelName}`, { query });
-      const result = (await this.model
-        .findOne(query)
-        .lean()
-        .exec()) as unknown as Entity | null;
-      this.logger.info('Got result from query', { result });
-      return result;
+      const doc = await this.model.findOneAndUpdate(query, model);
+      return doc?.toJSON() as unknown as Entity;
     } catch (err) {
       this.logger.error(
-        `Error on collection:${this.model.collection.name} performing findOne() query`,
-        err
+        `Error on collection:${this.model.collection.name} performing update() query`
       );
-      throw new Error(`Error performing requested operation`);
+      throw new Error('Error performing requested operation');
     }
+  }
+  async updateMany(
+    query: any,
+    models: Entity[]
+  ): Promise<[number, ...Entity[]]> {
+    throw new Error('Method not implemented.');
+  }
+
+  async deleteOne(query: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  async deleteMany(query: any): Promise<number> {
+    throw new Error('Method not implemented.');
   }
 }

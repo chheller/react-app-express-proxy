@@ -1,8 +1,8 @@
 import { AsyncContainerModule, interfaces } from 'inversify';
 import { Connection } from 'mongoose';
 import { iocContainer } from '..';
-import { MongoProvider } from '../../../db/mongo/mongo-db';
-import { MongoPersistence } from '../../../db/Repository';
+import { MongoPersistence } from '../../../db/mongo/mongo-persistence';
+import { MongoProvider } from '../../../db/mongo/mongo-provider';
 
 export default new AsyncContainerModule(async (bind: interfaces.Bind) => {
   bind<MongoPersistence>(MongoProvider).to(MongoProvider).inSingletonScope();

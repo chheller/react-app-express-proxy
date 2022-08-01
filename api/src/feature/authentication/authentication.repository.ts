@@ -1,3 +1,3 @@
-import { MongoProvider } from '../../db/mongo/mongo-db';
+import { MongoProvider } from '../../db/mongo/mongo-provider';
 
 export default class AuthenticationRepository extends MongoProvider {}

@@ -7,15 +7,17 @@ import { UserRepository } from './user.repository';
 
 @provideSingleton(UserService)
 export class UserService extends BaseService<User> {
-  constructor(@inject(UserRepository) protected repository: UserRepository) {
+  constructor(
+    @inject(UserRepository) protected override repository: UserRepository
+  ) {
     super();
   }
 
-  public async create(user: CreateUserDTO): Promise<User> {
+  public override async create(user: CreateUserDTO): Promise<User> {
     return super.create({ ...user, userId: v4() });
   }
 
-  public async update(
+  public override async update(
     userId: string,
     user: Partial<CreateUserDTO>
   ): Promise<User | null> {

@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { Body, Delete, Get, Patch, Path, Post, Query, Route } from 'tsoa';
 import { provideSingleton } from '../../common/ioc';
-import { SortOptions } from '../../db/Repository';
+import { SortOptions } from '../../db/base-crud-repository';
 import BaseController from '../base-controller';
 import { CreateUserDTO } from './user.model';
 import { UserService } from './user.service';

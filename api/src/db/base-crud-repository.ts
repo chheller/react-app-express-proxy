@@ -1,13 +1,16 @@
-import { injectable } from 'inversify';
-import { Connection } from 'mongoose';
 import Logger from '../common/logger';
+import { CRUDRepository } from './crud-repository';
 
-export abstract class Repository<EntityType> {
+export abstract class BaseCRUDRepository<EntityType>
+  implements CRUDRepository<EntityType>
+{
   protected logger = Logger.child({
     name: this.constructor.name,
   });
-  public abstract create(model: EntityType): Promise<EntityType>;
-  public abstract update(
+
+  public abstract createOne(model: EntityType): Promise<EntityType>;
+  public abstract createMany(models: EntityType[]): Promise<EntityType[]>;
+  public abstract updateOne(
     query: any,
     model: Partial<EntityType>
   ): Promise<EntityType | null>;
@@ -15,8 +18,9 @@ export abstract class Repository<EntityType> {
     query: any,
     model: EntityType[]
   ): Promise<[number, ...EntityType[]]>;
-  public abstract delete(query: any): Promise<number>;
-  public abstract find(
+  public abstract deleteOne(query: any): Promise<void>;
+  public abstract deleteMany(query: any): Promise<number>;
+  public abstract findMany(
     query: any,
     options?: FindOptions
   ): Promise<EntityType[]>;
@@ -36,9 +40,3 @@ export type SortOptions =
   | 'descending'
   | '1'
   | '-1';
-
-@injectable()
-export abstract class MongoPersistence {
-  abstract getConnection(): Promise<Connection>;
-  abstract close(): Promise<void>;
-}

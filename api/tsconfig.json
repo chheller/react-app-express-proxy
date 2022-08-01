@@ -16,6 +16,8 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "moduleResolution": "node",
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

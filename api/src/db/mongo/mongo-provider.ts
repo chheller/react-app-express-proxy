@@ -2,9 +2,8 @@ import { inject, injectable } from 'inversify';
 import { Connection, createConnection } from 'mongoose';
 import { IConfiguration } from '../../common/configuration';
 import Logger from '../../common/logger';
-import { MongoPersistence } from '../Repository';
+import { MongoPersistence } from './mongo-persistence';
 
-// @provideSingleton(MongoProvider)
 @injectable()
 export class MongoProvider extends MongoPersistence {
   private connection: Connection | undefined;
