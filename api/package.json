@@ -13,7 +13,7 @@
     "test": "DOTENV_CONFIG_PATH=.env.test mocha",
     "test:cy": "nyc npm run test",
     "lint": "eslint --cache",
-    "setup-env": "sh scripts/setup-env.sh"
+    "setup-env": "bash scripts/setup-env.sh"
   },
   "nyc": {
     "include": "src/**",

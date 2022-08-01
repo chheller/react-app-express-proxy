@@ -1,16 +1,21 @@
-#!/bin/zsh
+#!/bin/bash
+# Setup a temp directory to put the rsa keys
 WORKSPACE=$(mktemp -d "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
+# Setup a trap to cleanup the temp directory
 trap 'rm -rf -- "$WORKSPACE"' EXIT
-
-SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+# Get the path where the script lives, to reference the default env values in .default_profile
+SCRIPT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
 # Read in default values
-source $SCRIPT_DIR/.default_profile
-echo $env
-# Setup rsa signing keys
-openssl genrsa -out $WORKSPACE/privatekey.pem 4096
-openssl rsa -in $WORKSPACE/privatekey.pem -out $WORKSPACE/publickey.pem -pubout -outform PEM
-export API_RSA_PRIVATE_SIGNING_KEY=$(cat $WORKSPACE/privatekey.pem)
-export API_RSA_PUBLIC_SIGNING_KEY=$(cat $WORKSPACE/publickey.pem)
+source $SCRIPT_DIR/.default_profile.sh
 
-# Write out the values to .env
+# Setup rsa signing keys
+# Note, OpenSSL `genrsa` will generate a PKCS#1 keytype, so we need to use genpkey instead 
+openssl genpkey -out $WORKSPACE/privatekey.pem -algorithm RSA -pkeyopt rsa_keygen_bits:4096
+# Export the public key
+openssl pkey -in $WORKSPACE/privatekey.pem -out $WORKSPACE/publickey.pem -pubout
+# Set local environment variables for the keys 
+export API_RSA_PRIVATE_SIGNING_KEY="$(cat $WORKSPACE/privatekey.pem)"
+export API_RSA_PUBLIC_SIGNING_KEY="$(cat $WORKSPACE/publickey.pem)"
+
+# Write out the values to .env file where the script was executed from
 envsubst < .env.template > .env
