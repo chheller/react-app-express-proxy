@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { importPKCS8, importSPKI, KeyLike } from 'jose';
-import keysOf from './helpers/keyOf';
+import keysOf from './helpers/keysOf';
 import Logger from './logger';
 
 export interface IConfiguration {

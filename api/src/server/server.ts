@@ -6,7 +6,8 @@ import morgan from 'morgan';
 import 'reflect-metadata';
 import { iocContainer } from '../common/ioc';
 import configuration from '../common/ioc/modules/configuration';
-import persistence from '../common/ioc/modules/persistence';
+import connectionProvider from '../common/ioc/modules/connection-provider';
+import mongoProvider from '../common/ioc/modules/mongo-provider';
 import Logger from '../common/logger';
 import { MongoPersistence } from '../db/mongo/mongo-persistence';
 import { MongoProvider } from '../db/mongo/mongo-provider';
@@ -18,7 +19,11 @@ const logger = Logger.child({ name: 'App' });
 export async function initializeApp() {
   try {
     // Load configuration and persistence container modules into IoC Container
-    await iocContainer.loadAsync(configuration, persistence);
+    await iocContainer.loadAsync(
+      configuration,
+      mongoProvider,
+      connectionProvider
+    );
     // Load @Provider bindings into IoC Container
     iocContainer.load(buildProviderModule());
     // Get the ErrorMiddleware out of the IoC container to register with the app
@@ -67,6 +72,7 @@ export async function initializeApp() {
       logger.info('Handling SIGINT Signal');
       await close();
     });
+
     process.on('SIGTERM', async () => {
       logger.info('Handling SIGTERM Signal');
       await close();

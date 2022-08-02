@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { Connection, Schema } from 'mongoose';
 import { provideSingleton } from '../../common/ioc';
-import { MongoRepository } from '../../db/mongo/mongo.repository';
+import { MongoRepository } from '../../db/mongo/mongo-repository';
 import { User } from './user.model';
 
 @provideSingleton(UserRepository)

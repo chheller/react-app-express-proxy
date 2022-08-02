@@ -57,4 +57,4 @@
 - [ ] Remove need for returning server `.close()` handler for `intializeApp()` for test suite
 - [ ] Figure out to integrate NextJS with this as the base
 - [ ] Investigate Mono-repo-ification 
-  - [ ] Lerna
+  - [ ] Lerna?

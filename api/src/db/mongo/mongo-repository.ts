@@ -14,9 +14,9 @@ export class MongoRepository<
     @unmanaged() protected schema: Schema
   ) {
     super();
-    this.logger.info(`Creating repository for ${this.modelName} schema.`);
+    this.logger.debug(`Creating repository for ${this.modelName} schema.`);
     this.model = this.connection.model(this.modelName, this.schema);
-    this.logger.info(
+    this.logger.debug(
       `Created model for ${this.model.collection.name} collection`
     );
   }
