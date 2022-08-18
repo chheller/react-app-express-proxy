@@ -7,28 +7,27 @@ import { CRUDRepository, FindOptions } from "../crud-repository";
 export class MongoRepository<Entity = Record<string, any>>
   implements CRUDRepository<Entity>
 {
-  protected model: Model<Entity>;
-
   constructor(
-    protected connection: Connection,
+    protected connectionProvider: () => Promise<Connection>,
     @unmanaged() protected modelName: string,
     @unmanaged() protected schema: Schema,
     @unmanaged() protected logger: Logger
   ) {
     this.logger.debug(`Creating repository for ${this.modelName} schema.`);
-    this.model = this.connection.model<Entity>(this.modelName, this.schema);
-    this.logger.debug(
-      `Created model for ${this.model.collection.name} collection`
-    );
+  }
+  private async getModel(): Promise<Model<Entity>> {
+    const connection = await this.connectionProvider();
+    return connection.model<Entity>(this.modelName, this.schema);
   }
 
   async createOne(entity: Entity): Promise<Entity> {
+    const model = await this.getModel();
     try {
-      const doc = await this.model.create(new this.model(entity));
+      const doc = await model.create(new model(entity));
       return doc.toObject();
     } catch (err) {
       this.logger.error(
-        `Error on collection:${this.model.collection.name} performing create() query`,
+        `Error on collection:${model.collection.name} performing create() query`,
         err
       );
       throw new Error("Error performing requested operation");
@@ -36,13 +35,17 @@ export class MongoRepository<Entity = Record<string, any>>
   }
 
   public async createMany(entities: Entity[]): Promise<Entity[]> {
+    const model = await this.getModel();
+
     throw new Error("Method not implemented.");
   }
 
   public async findOne(query: any): Promise<Entity | null> {
+    const model = await this.getModel();
+
     try {
       this.logger.info(`Querying ${this.modelName}`, { query });
-      const result = (await this.model
+      const result = (await model
         .findOne(query)
         .lean()
         .exec()) as unknown as Entity | null;
@@ -50,7 +53,7 @@ export class MongoRepository<Entity = Record<string, any>>
       return result;
     } catch (err) {
       this.logger.error(
-        `Error on collection:${this.model.collection.name} performing findOne() query`,
+        `Error on collection:${model.collection.name} performing findOne() query`,
         err
       );
       throw new Error(`Error performing requested operation`);
@@ -66,10 +69,11 @@ export class MongoRepository<Entity = Record<string, any>>
       limit: 25,
       ...options,
     };
+    const model = await this.getModel();
 
     try {
       this.logger.info(`Querying ${this.modelName}`, { query, options });
-      return this.model
+      return model
         .find(query)
         .skip(skip)
         .limit(limit)
@@ -83,14 +87,16 @@ export class MongoRepository<Entity = Record<string, any>>
 
   async updateOne(
     query: any,
-    model: Partial<Entity>
+    entity: Partial<Entity>
   ): Promise<Entity | undefined | null> {
+    const model = await this.getModel();
+
     try {
-      const doc = await this.model.findOneAndUpdate(query, model);
+      const doc = await model.findOneAndUpdate(query, entity);
       return doc?.toObject();
     } catch (err) {
       this.logger.error(
-        `Error on collection:${this.model.collection.name} performing update() query`
+        `Error on collection:${model.collection.name} performing update() query`
       );
       throw new Error("Error performing requested operation");
     }
@@ -99,14 +105,20 @@ export class MongoRepository<Entity = Record<string, any>>
     query: any,
     models: Entity[]
   ): Promise<[number, ...Entity[]]> {
+    const model = await this.getModel();
+
     throw new Error("Method not implemented.");
   }
 
   async deleteOne(query: any): Promise<void> {
+    const model = await this.getModel();
+
     throw new Error("Method not implemented.");
   }
 
   async deleteMany(query: any): Promise<number> {
+    const model = await this.getModel();
+
     throw new Error("Method not implemented.");
   }
 }

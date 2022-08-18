@@ -7,9 +7,11 @@ import { User } from './user.model';
 
 @provideSingleton(UserRepository)
 export class UserRepository extends MongoRepository<User> {
-  constructor(@inject(Connection) connection: Connection) {
+  constructor(
+    @inject('ConnectionProvider') connectionProvider: () => Promise<Connection>
+  ) {
     super(
-      connection,
+      connectionProvider,
       'user',
       new Schema(
         {
@@ -22,7 +24,7 @@ export class UserRepository extends MongoRepository<User> {
         },
         { versionKey: false }
       ),
-      Logger.child('UserRepository')
+      Logger.child({ name: 'UserRepository' })
     );
   }
 }
