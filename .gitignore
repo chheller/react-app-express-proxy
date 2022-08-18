@@ -1,10 +1,10 @@
 node_modules
 volumes
 
-api/.nyc_output
-api/coverage
-api/dist
-api/data
+packages/api/.nyc_output
+packages/api/coverage
+packages/api/dist
+packages/api/data
 
 
 .env*
