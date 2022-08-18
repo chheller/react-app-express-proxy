@@ -1,9 +1,10 @@
-import { FindOptions } from './base-crud-repository';
-
 export interface CRUDRepository<EntityType> {
   createOne(model: EntityType): Promise<EntityType>;
   createMany(models: EntityType[]): Promise<EntityType[]>;
-  updateOne(query: any, model: Partial<EntityType>): Promise<EntityType | null>;
+  updateOne(
+    query: any,
+    model: Partial<EntityType>
+  ): Promise<EntityType | undefined | null>;
   updateMany(
     query: any,
     model: EntityType[]
@@ -13,3 +14,17 @@ export interface CRUDRepository<EntityType> {
   findMany(query: any, options?: FindOptions): Promise<EntityType[]>;
   findOne(query: any): Promise<EntityType | null>;
 }
+
+export interface FindOptions {
+  skip?: number;
+  limit?: number;
+  sort?: SortOptions;
+}
+
+export type SortOptions =
+  | "asc"
+  | "desc"
+  | "ascending"
+  | "descending"
+  | "1"
+  | "-1";

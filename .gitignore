@@ -6,6 +6,7 @@ packages/api/coverage
 packages/api/dist
 packages/api/data
 
+**/lib/**
 
 .env*
 !.env.template

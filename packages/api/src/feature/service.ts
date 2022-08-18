@@ -1,7 +1,10 @@
 import { decorate, injectable } from 'inversify';
+import {
+  BaseCRUDRepository,
+  FindOptions,
+  sanitizeSearchQuery,
+} from 'repository-provider';
 import Logger from '../common/logger';
-import { BaseCRUDRepository, FindOptions } from '../db/base-crud-repository';
-import { sanitizeSearchQuery } from '../db/mongo/sanitize';
 
 export abstract class BaseService<Entity extends Record<string, any>> {
   protected repository!: BaseCRUDRepository<Entity>;

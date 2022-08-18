@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { Connection, createConnection } from 'mongoose';
+import { MongoPersistence } from '../../../repository-provider/src/mongo/mongo-persistence';
 import { IConfiguration } from '../../common/configuration';
 import Logger from '../../common/logger';
-import { MongoPersistence } from './mongo-persistence';
 
 @injectable()
 export class MongoProvider extends MongoPersistence {
