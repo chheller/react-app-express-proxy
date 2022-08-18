@@ -1,5 +1,5 @@
 {
-    "name": "react-tsoa-app-boilerplate",
+    "name": "@cheller/react-tsoa-app-boilerplate",
     "version": "0.0.0",
     "private": true,
     "scripts": {
@@ -20,6 +20,7 @@
         ]
     },
     "dependencies": {
+        "@chheller/repository-provider": "^0.0.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-scripts": "4.0.1"

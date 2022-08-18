@@ -20,7 +20,7 @@ export class UserService extends BaseService<User> {
   public override async update(
     userId: string,
     user: Partial<CreateUserDTO>
-  ): Promise<User | null> {
+  ): Promise<User | null | undefined> {
     return super.update({ userId }, user);
   }
 }

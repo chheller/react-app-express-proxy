@@ -1,8 +1,8 @@
+import { SortOptions } from '@chheller/repository-provider';
 import { inject } from 'inversify';
 import { Body, Delete, Get, Patch, Path, Post, Query, Route } from 'tsoa';
 import { provideSingleton } from '../../common/ioc';
 import BaseController from '../base-controller';
-import { SortOptions } from '../base-crud-repository';
 import { CreateUserDTO } from './user.model';
 import { UserService } from './user.service';
 

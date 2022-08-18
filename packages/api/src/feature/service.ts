@@ -1,13 +1,13 @@
-import { decorate, injectable } from 'inversify';
 import {
-  BaseCRUDRepository,
+  CRUDRepository,
   FindOptions,
   sanitizeSearchQuery,
-} from 'repository-provider';
+} from '@chheller/repository-provider';
+import { decorate, injectable } from 'inversify';
 import Logger from '../common/logger';
 
 export abstract class BaseService<Entity extends Record<string, any>> {
-  protected repository!: BaseCRUDRepository<Entity>;
+  protected repository!: CRUDRepository<Entity>;
   protected logger = Logger.child({
     name: this.constructor.name,
   });
@@ -23,7 +23,10 @@ export abstract class BaseService<Entity extends Record<string, any>> {
     return this.repository.findMany(sanitizedQuery, options);
   }
 
-  public update(query: any, entity: Partial<Entity>): Promise<Entity | null> {
+  public update(
+    query: any,
+    entity: Partial<Entity>
+  ): Promise<Entity | null | undefined> {
     return this.repository.updateOne(query, entity);
   }
 

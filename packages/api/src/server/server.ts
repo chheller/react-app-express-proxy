@@ -9,8 +9,8 @@ import configuration from '../common/ioc/modules/configuration';
 import connectionProvider from '../common/ioc/modules/connection-provider';
 import mongoProvider from '../common/ioc/modules/mongo-provider';
 import Logger from '../common/logger';
-import { MongoPersistence } from '../db/mongo/mongo-persistence';
-import { MongoProvider } from '../db/mongo/mongo-provider';
+import { MongoPersistence } from '../common/mongo-persistence';
+import { MongoProvider } from '../common/mongo-provider';
 import ErrorMiddleware from '../middleware/error.middleware';
 import { RegisterRoutes } from '../routes';
 

@@ -12,7 +12,7 @@ export interface CRUDRepository<EntityType> {
   deleteOne(query: any): Promise<void>;
   deleteMany(query: any): Promise<number>;
   findMany(query: any, options?: FindOptions): Promise<EntityType[]>;
-  findOne(query: any): Promise<EntityType | null>;
+  findOne(query: any): Promise<EntityType | null | undefined>;
 }
 
 export interface FindOptions {
