@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "4f106dfb-66b5-479c-ab9c-cb8fbaddcca0",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:8080/users",
+    "url": "http://localhost:8080/users",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-08-18T00:46:16.648Z",
+    "modified": "2022-08-18T00:46:16.714Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "8afbb607-af20-4c77-834e-e9cd1ae61191",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:8080/users/1234",
+    "url": "http://localhost:8080/users/1234",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-08-18T00:46:22.651Z",
+    "modified": "2022-08-18T00:46:22.710Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]

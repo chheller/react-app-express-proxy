@@ -1,0 +1,410 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"CreateAuthenticationBody": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string",
+						"minLength": 8
+					}
+				},
+				"required": [
+					"userId",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ValidateCredentialBody": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string",
+						"minLength": 8
+					}
+				},
+				"required": [
+					"userId",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"givenName": {
+						"type": "string"
+					},
+					"familyName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"emailAddress": {
+						"type": "string"
+					},
+					"avatarUrl": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"givenName",
+					"familyName",
+					"preferredName",
+					"emailAddress",
+					"avatarUrl",
+					"userId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SortOptions": {
+				"type": "string",
+				"enum": [
+					"1",
+					"asc",
+					"desc",
+					"ascending",
+					"descending",
+					"-1"
+				]
+			},
+			"CreateUserDTO": {
+				"properties": {
+					"givenName": {
+						"type": "string"
+					},
+					"familyName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"emailAddress": {
+						"type": "string"
+					},
+					"avatarUrl": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"givenName",
+					"familyName",
+					"preferredName",
+					"emailAddress",
+					"avatarUrl"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partial_CreateUserDTO_": {
+				"properties": {
+					"givenName": {
+						"type": "string"
+					},
+					"familyName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"emailAddress": {
+						"type": "string"
+					},
+					"avatarUrl": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "react-tsoa-server-boilerplate",
+		"version": "0.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/authentication": {
+			"post": {
+				"operationId": "CreateNewCredential",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"description": "Endpoint for creating new credentials. Required information is the userId that corresponds to the\nuser for which the credential is being created, and the password. Additionally, the user who\nis creating is this credential is required. The user creating the credential must either match\nthe userId for which the credential is being created, or must already exist in the User collection.\n\nThe maximum password length is 71 bytes, as this is the maximum BCrypt supports in addition to\npreventing a denial-of-service against the authentcation endpoint by preventing unnecessarily large\npasswords from being passed through the hashing function",
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAuthenticationBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/authentication/authenticate": {
+			"post": {
+				"operationId": "ValidateCredential",
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"401": {
+						"description": "Unauthorizated"
+					}
+				},
+				"description": "Validates a user credential. Returns an RSASSA-PKC1S-SHA256 signed JWT as a secure, http-only, https cookie\nupon successful validation of a user's credentials. They keyId property can be used to lookup the public\nsigning key for self-verification",
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ValidateCredentialBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/authentication/jwks": {
+			"get": {
+				"operationId": "GetVerificationKey",
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				},
+				"description": "Returns the public signing key",
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/users/{id}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users/{attribute}/{value}": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/User"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "attribute",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "value",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/SortOptions"
+						}
+					}
+				]
+			}
+		},
+		"/users": {
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUserDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{userId}": {
+			"patch": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/User"
+										},
+										{
+											"properties": {
+												"error": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"error"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_CreateUserDTO_"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
