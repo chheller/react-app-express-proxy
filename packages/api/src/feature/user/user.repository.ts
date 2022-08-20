@@ -1,7 +1,7 @@
-import { MongoRepository } from '@chheller/repository-provider';
 import { inject } from 'inversify';
 import { Connection, Schema } from 'mongoose';
 import { provideSingleton } from '../../common/ioc';
+import { MongoRepository } from '../../common/lib/repository-provider';
 import Logger from '../../common/logger';
 import { User } from './user.model';
 

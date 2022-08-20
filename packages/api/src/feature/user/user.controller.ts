@@ -1,11 +1,10 @@
-import { SortOptions } from '@chheller/repository-provider';
 import { inject } from 'inversify';
 import { Body, Delete, Get, Patch, Path, Post, Query, Route } from 'tsoa';
 import { provideSingleton } from '../../common/ioc';
+import { SortOptions } from '../../common/lib/repository-provider'; // Should probably not have the controller dependent on tthet repository
 import BaseController from '../base-controller';
 import { CreateUserDTO } from './user.model';
 import { UserService } from './user.service';
-
 @Route('users')
 @provideSingleton(UserController)
 export class UserController extends BaseController {

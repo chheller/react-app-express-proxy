@@ -1,9 +1,9 @@
+import { decorate, injectable } from 'inversify';
 import {
   CRUDRepository,
   FindOptions,
   sanitizeSearchQuery,
-} from '@chheller/repository-provider';
-import { decorate, injectable } from 'inversify';
+} from '../common/lib/repository-provider';
 import Logger from '../common/logger';
 
 export abstract class BaseService<Entity extends Record<string, any>> {
@@ -12,7 +12,9 @@ export abstract class BaseService<Entity extends Record<string, any>> {
     name: this.constructor.name,
   });
 
-  public findById(id: { [key: string]: string }): Promise<Entity | null> {
+  public findById(id: {
+    [key: string]: string;
+  }): Promise<Entity | null | undefined> {
     this.logger.info('Finding entity by id', id);
     return this.repository.findOne(id);
   }

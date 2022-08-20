@@ -1,6 +1,6 @@
 import { AsyncContainerModule, interfaces } from 'inversify';
 import { Connection } from 'mongoose';
-import { MongoProvider } from '../../mongo-provider';
+import { MongoProvider } from '../../../db/mongo-provider';
 
 type ConnectionProvider = () => Promise<Connection>;
 export default new AsyncContainerModule(async (bind: interfaces.Bind) => {
